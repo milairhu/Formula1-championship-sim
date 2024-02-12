@@ -1,0 +1,49 @@
+@startuml IA04 - Modélisation Championnat de Formule 1
+
+
+title Projet IA04 - Circuit de Formule 1
+
+class Circuit {
+  - id: string
+  - name: string
+  - country: string
+  - MeteoDistribution : []int
+  - NbLaps: int
+
+  + Circuit(id, name, country : string, portions : []Portion, MeteoDistribution : []int, NbLaps: int)
+  + GenerateMeteo(): Meteo
+}
+
+enum Meteo{
+  Rainy
+  Dry
+  Heat
+}
+
+abstract class Portion{
+  - id : string
+  - difficulty: int
+  - nextPortion: *Portion
+
+  + Portion(id: string, difficulty: int, driversOnPortion: []*DriverInRace, isDRSZone: bool)
+  + AddDriverOn(driver : *DriverInRace)
+  + RemoveDriverOn(driver : *DriverInRace)
+  + SwapDrivers(driver1 : *DriverInRace, driver2 : *DriverInRace)
+}
+
+
+class Turn{
+}
+
+class Straight{
+  - isDRSZone: bool
+}
+
+Circuit "1..n" --o "*" Championship : intègre >
+Circuit "1" *-- "1..n" Portion : contient >
+Portion  <|--  Turn
+Portion  <|--  Straight
+Portion "1" -- "*" DriverInRace : est sur <
+Meteo "n" -- "*" Circuit : a une probabilité d'apparition sur >
+
+@enduml

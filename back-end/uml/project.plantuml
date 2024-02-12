@@ -1,0 +1,184 @@
+@startuml IA04 - Modélisation Championnat de Formule 1
+
+
+title Projet IA04 - Modélisation d'un Championnat de Formule 1
+
+class Simulator{
+  + Simulator(championships : []types.Championship)
+  + LaunchSimulation() : []*types.DriverTotalPoints, []*types.TeamTotalPoints, []*types.PersonalityAveragePoints, map[string]map[int]float64
+}
+
+class Driver {
+  - id : string
+  - firstName : string
+  - lastName : string
+  - level: int
+  - country : string
+  - championshipPoints: int
+
+  + Driver(id,  firstName, lastName, country : string, level: int, team : *Team, personality: Personality)
+  
+  }
+
+class DriverInRace {
+  - nbLaps : int
+  - status : DriverStatus
+
+  - isPitStop : bool
+  - timeWoPitStop : int
+  - chanEnv : chan Action
+  - pitStopSteps : int
+
+  - prevTyre : Tyre
+  - currentTyre : Tyre
+  - availableTyres : map[Tyre]int
+  - tyreTypeCount : int
+  - usedTyreTypes : []Tyre
+
+  - currentRank : int
+  - speed : int
+
+  + DriverInRace(driver : *Driver, position: *Portion, channel : chan Action, meteoCondition Meteo)
+  + PortionSuccess(pénalité: int) : bool
+  + PitStop() : bool
+  + ChangeTyreType() : bool
+  + TestPneus() : bool
+  + Overtake(otherDriver : *DriverInRace) : bool, []*DriverInRace
+  + DriverToOvertake() : *DriverInRace
+  + OvertakeDecision(driverToOvertake : *DriverInRace) : bool
+  + ChangeSpeed() : void
+  + Start((position : *Portion, nbLaps : int)
+  }
+
+enum Action{
+  TRY_OVERTAKE
+  CONTINUE
+  ACCIDENTPNEUS
+  NOOP
+}
+
+enum DriverStatus{
+  RACING
+	CRASHED
+	ARRIVED
+	PITSTOP
+	PITSTOP_CHANGETYRE
+}
+
+enum Tyre{
+  WET
+	SOFT
+	MEDIUM
+	HARD
+}
+  
+class Team {
+  - id: string
+  - name: string
+  - level: int
+
+  + Team(id, name : string, drivers : []Driver, level: int)
+  + CalcChampionshipPoints() : int
+}
+
+class Circuit {
+  - id: string
+  - name: string
+  - country: string
+  - MeteoDistribution : []int
+  - NbLaps: int
+
+  + Circuit(id, name, country : string, portions : []Portion, MeteoDistribution : []int, NbLaps: int)
+  + GenerateMeteo(): Meteo
+}
+
+class Championship{
+  - id : string
+  - name : string
+
+  + Championship(id, name : string, circuits : []*Circuit, teams : []*Team)
+  + CalcTeamRank(): []*Team
+  + CalcDriverRank() []*Driver
+}
+
+class HighLight{
+  - description : string
+  - Type : HighLightType
+
+  + HighLight(drivers: []*DriverInRace, type: HighLightType)
+}
+
+enum HighLightType{
+  CrashOvertake
+  CrashPortion
+  Overtake
+  Finish
+  DriverPitstop
+  DriverPitstopChangeTyre
+  Crevaison
+}
+
+enum Meteo{
+  Rainy
+  Dry
+  Heat
+}
+
+class Personality{
+  - TraitsValue : map[string]int
+
+  + Personality(traitsValue : map[string]int)
+}
+
+abstract class Portion{
+  - id : string
+  - difficulty: int
+  - nextPortion: *Portion
+
+  + Portion(id: string, difficulty: int, driversOnPortion: []*DriverInRace, isDRSZone: bool)
+  + AddDriverOn(driver : *DriverInRace)
+  + RemoveDriverOn(driver : *DriverInRace)
+  + SwapDrivers(driver1 : *DriverInRace, driver2 : *DriverInRace)
+}
+
+
+class Turn{
+}
+
+class Straight{
+  - isDRSZone: bool
+}
+
+class Race{
+  - id: string
+  - date: Date 
+  - finalResult: []*Driver
+
+  + Race(id : string, circuit : *Circuit, date : time.Time, teams : []*Team, meteo : Meteo)
+  + SimulateRace()
+  + CalcDriversRank() : mapstring[]int 
+}
+
+Simulator "1" *-- "1..n" Championship : simule <
+HighLightType "1" --o "*" HighLight
+HighLight "*" --* "1" Race : résume >
+HighLight "*" --* "*" DriverInRace : implique >
+Race "*" o-- "1..*" Team : participe à <
+Race "*" o-- "1" Circuit : se déroule sur >
+Race "*" --* "1" Championship : constitue >
+Race "*" -- "1" Meteo : affecte <
+Circuit "1..n" --o "*" Championship : intègre >
+Circuit "1" *-- "1..n" Portion : contient >
+Portion  <|--  Turn
+Portion  <|--  Straight
+Portion "1" -- "*" DriverInRace : est sur <
+Championship "*" o-- "1..n" Team : prend par à <
+Team "1" *-- "2" Driver : appartient à <
+Personality "1" --o "1" Driver : a <
+DriverInRace "1" o-- "1" Driver : implémente en course >
+DriverInRace "1" o-- "*" DriverStatus : a >
+DriverInRace "1" o-- "*" Tyre : a/a eu >
+DriverInRace "1" o-- "*" Action : souhaite exécuter / exécute >
+
+
+@enduml

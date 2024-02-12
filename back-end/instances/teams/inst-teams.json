@@ -1,0 +1,333 @@
+[
+    {
+        "Name": "Red Bull Racing",
+        "Country": "Austria",
+        "Level": 5,
+        "Drivers": [
+            {
+                "FirstName": "Max",
+                "LastName": "Verstappen",
+                "Country": "Netherlands",
+                "Level": 10,
+                "Personality": {
+                    "Aggressivity": 5,
+                    "Confidence": 5,
+                    "Docility": 2,
+                    "Concentration": 4
+
+                }
+            },
+            {
+                "FirstName": "Sergio",
+                "LastName": "Perez",
+                "Country": "Mexico",
+                "Level":7,
+                "Personality": {
+                    "Aggressivity": 2,
+                    "Confidence": 4,
+                    "Docility": 4,
+                    "Concentration": 5
+
+                }
+                }
+            
+        ]
+    },
+    {
+        "Name": "Mercedes",
+        "Country": "UK",
+        "Level": 4,
+        "Drivers": [
+            {
+                "FirstName": "Lewis",
+                "LastName": "Hamilton",
+                "Country": "UK",
+                "Level": 8,
+                "Personality": {
+                    "Aggressivity": 4,
+                    "Confidence": 5,
+                    "Docility": 3,
+                    "Concentration": 5
+
+                }
+            },
+            {
+                "FirstName": "George",
+                "LastName": "Russell",
+                "Country": "UK",
+                "Level": 7,
+                "Personality": {
+                    "Aggressivity": 5,
+                    "Confidence": 4,
+                    "Docility": 3,
+                    "Concentration": 3
+
+                }
+            }
+        ]
+    },
+    {
+        "Name": "Ferrari",
+        "Country": "Italy",
+        "Level": 4,
+        "Drivers": [
+            {
+                "FirstName": "Charles",
+                "LastName": "Leclerc",
+                "Country": "Monaco",
+                "Level": 8,
+                "Personality": {
+                    "Aggressivity": 4,
+                    "Confidence": 4,
+                    "Docility": 4,
+                    "Concentration": 4
+
+                }
+            },
+            {
+                "FirstName": "Carlos",
+                "LastName": "Sainz",
+                "Country": "Spain",
+                "Level": 7,
+                "Personality": {
+                    "Aggressivity": 4,
+                    "Confidence": 3,
+                    "Docility": 3,
+                    "Concentration": 5
+
+                }
+            }
+        ]
+    },
+    {
+        "Name": "McLaren",
+        "Country": "UK",
+        "Level": 3,
+        "Drivers": [
+            {
+                "FirstName": "Lando",
+                "LastName": "Norris",
+                "Country": "UK",
+                "Level": 7,
+                "Personality": {
+                    "Aggressivity": 3,
+                    "Confidence": 4,
+                    "Docility": 5,
+                    "Concentration": 4
+
+                }
+            },
+            {
+                "FirstName": "Oscar",
+                "LastName": "Piastri",
+                "Country": "Australia",
+                "Level": 4,
+                "Personality": {
+                    "Aggressivity": 4,
+                    "Confidence": 3,
+                    "Docility": 4,
+                    "Concentration": 3
+
+                }
+            }
+        ]
+    },
+    {
+        "Name": "Alpine",
+        "Country": "France",
+        "Level": 3,
+        "Drivers": [
+            {
+                "FirstName": "Pierre",
+                "LastName": "Gasly",
+                "Country": "France",
+                "Level": 6,
+                "Personality": {
+                    "Aggressivity": 4,
+                    "Confidence": 3,
+                    "Docility": 4,
+                    "Concentration": 4
+
+                }
+            },
+            {
+                "FirstName": "Esteban",
+                "LastName": "Ocon",
+                "Country": "France",
+                "Level": 5,
+                "Personality": {
+                    "Aggressivity": 3,
+                    "Confidence": 4,
+                    "Docility": 3,
+                    "Concentration": 4
+
+                }
+            }
+        ]
+    },
+    {
+        "Name": "Alpha Tauri",
+        "Country": "Italy",
+        "Level": 2,
+        "Drivers": [
+            {
+                "FirstName": "Daniel",
+                "LastName": "Ricciardo",
+                "Country": "Australia",
+                "Level": 5,
+                "Personality": {
+                    "Aggressivity": 5,
+                    "Confidence": 3,
+                    "Docility": 4,
+                    "Concentration": 4
+
+                }
+            },
+            {
+                "FirstName": "Yuki",
+                "LastName": "Tsunoda",
+                "Country": "Japan",
+                "Level": 4,
+                "Personality": {
+                    "Aggressivity": 4,
+                    "Confidence": 3,
+                    "Docility": 2,
+                    "Concentration": 2
+
+                }
+            }
+        ]
+    },
+    {
+        "Name": "Aston Martin",
+        "Country": "UK",
+        "Level": 2,
+        "Drivers": [
+            {
+                "FirstName": "Fernando",
+                "LastName": "Alonso",
+                "Country": "Spain",
+                "Level": 7,
+                "Personality": {
+                    "Aggressivity": 5,
+                    "Confidence": 5,
+                    "Docility": 3,
+                    "Concentration": 4
+
+                }
+            },
+            {
+                "FirstName": "Lance",
+                "LastName": "Stroll",
+                "Country": "Canada",
+                "Level": 2,
+                "Personality": {
+                    "Aggressivity": 3,
+                    "Confidence": 2,
+                    "Docility": 3,
+                    "Concentration": 2
+
+                }
+            }
+        ]
+    },
+    {
+        "Name": "Alfa Romeo",
+        "Country": "Switzerland",
+        "Level": 1,
+        "Drivers": [
+            {
+                "FirstName": "Valtteri",
+                "LastName": "Bottas",
+                "Country": "Finland",
+                "Level": 6,
+                "Personality": {
+                    "Aggressivity": 3,
+                    "Confidence": 4,
+                    "Docility": 4,
+                    "Concentration": 5
+
+                }
+            },
+            {
+                "FirstName": "Guanyu",
+                "LastName": "Zhou",
+                "Country": "China",
+                "Level": 3,
+                "Personality": {
+                    "Aggressivity": 3,
+                    "Confidence": 3,
+                    "Docility": 5,
+                    "Concentration": 4
+
+                }
+            }
+        ]
+    },
+    {
+        "Name": "Haas",
+        "Country": "USA",
+        "Level": 1,
+        "Drivers": [
+            {
+                "FirstName": "Kevin",
+                "LastName": "Magnussen",
+                "Country": "Denmark",
+                "Level": 3,
+                "Personality": {
+                    "Aggressivity": 4,
+                    "Confidence": 3,
+                    "Docility": 2,
+                    "Concentration": 3
+
+                }
+            },
+            {
+                "FirstName": "Niko",
+                "LastName": "Hulkenberg",
+                "Country": "Germany",
+                "Level": 3,
+                "Personality": {
+                    "Aggressivity": 3,
+                    "Confidence": 3,
+                    "Docility": 4,
+                    "Concentration": 3
+
+                }
+            }
+        ]
+    },
+    {
+        "Name": "Williams",
+        "Country": "UK",
+        "Level": 1,
+        "Drivers": [
+            {
+                "FirstName": "Alex",
+                "LastName": "Albon",
+                "Country": "Thailand",
+                "Level": 4,
+                "Personality": {
+                    "Aggressivity": 4,
+                    "Confidence": 3,
+                    "Docility": 4,
+                    "Concentration": 4
+
+                }
+            },
+            {
+                "FirstName": "Logan",
+                "LastName": "Sargeant",
+                "Country": "USA",
+                "Level": 2,
+                "Personality": {
+                    "Aggressivity": 2,
+                    "Confidence": 2,
+                    "Docility": 3,
+                    "Concentration": 3
+
+                }
+            }
+        ]
+    }
+]

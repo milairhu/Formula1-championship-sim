@@ -1,0 +1,62 @@
+@startuml IA04 - Modélisation Championnat de Formule 1
+
+
+title Projet IA04 - Modélisation d'une course de Formule 1
+
+class Simulator{
+  + Simulator(championships : []types.Championship)
+  + LaunchSimulation() : []*types.DriverTotalPoints, []*types.TeamTotalPoints, []*types.PersonalityAveragePoints, map[string]map[int]float64
+}
+
+class Championship{
+  - id : string
+  - name : string
+
+  + Championship(id, name : string, circuits : []*Circuit, teams : []*Team)
+  + CalcTeamRank(): []*Team
+  + CalcDriverRank() []*Driver
+}
+
+class HighLight{
+  - description : string
+  - Type : HighLightType
+
+  + HighLight(drivers: []*DriverInRace, type: HighLightType)
+}
+
+enum HighLightType{
+  CrashOvertake
+  CrashPortion
+  Overtake
+  Finish
+  DriverPitstop
+  DriverPitstopChangeTyre
+  Crevaison
+}
+
+enum Meteo{
+  Rainy
+  Dry
+  Heat
+}
+
+class Race{
+  - id: string
+  - date: Date 
+  - finalResult: []*Driver
+
+  + Race(id : string, circuit : *Circuit, date : time.Time, teams : []*Team, meteo : Meteo)
+  + SimulateRace()
+  + CalcDriversRank() : mapstring[]int 
+}
+
+Simulator "1" *-- "1..n" Championship : simule <
+HighLightType "1" --o "*" HighLight
+HighLight "*" --* "1" Race : résume >
+HighLight "*" --* "*" DriverInRace : implique >
+Race "*" o-- "1..*" Team : participe à <
+Race "*" o-- "1" Circuit : se déroule sur >
+Race "*" --* "1" Championship : constitue >
+Race "*" -- "1" Meteo : affecte <
+
+@enduml
