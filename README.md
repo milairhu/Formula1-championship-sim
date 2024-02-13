@@ -11,7 +11,7 @@ Our idea was to implement formula 1 races on existing F1 circuits [modelised in 
 
 Refer to the [project description](#project-description) for more details.
 
-The project was to be developed in 2 to 3 months and got the final grade of 17.5/20.
+The project was to be developed in 2 to 3 months and was awarded the final grade of 17.5/20.
 
 Original repositories:
 

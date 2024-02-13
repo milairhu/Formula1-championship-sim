@@ -64,7 +64,7 @@ func NewChampionshipRandom(id string, name string, circuits []*Circuit, teams []
 	}
 }
 
-//Remarque : on utilise des pointeurs quand l'objet ne gère pas le cycle de vie des instances
+// Note : pointers are used when life cycle is not handled by the object itself
 
 func (c *Championship) CalcTeamRank() []*Team {
 	res := make([]*Team, len(c.Teams))
@@ -77,7 +77,7 @@ func (c *Championship) CalcTeamRank() []*Team {
 }
 
 func (c *Championship) DisplayTeamRank() []*TeamTotalPoints {
-	log.Printf("\n\n====Classement constructeur ====\n")
+	log.Printf("\n\n==== Teams Rankig=ng ====\n")
 	teamRank := c.CalcTeamRank()
 	teamsRankTab := make([]*TeamTotalPoints, 0)
 	for i, team := range teamRank {
@@ -106,7 +106,7 @@ func (c *Championship) CalcDriverRank() []*Driver {
 }
 
 func (c *Championship) DisplayDriverRank() ([]*DriverTotalPoints, []*PersonalityAveragePoints, map[string]map[int]float64) {
-	log.Printf("\n\n====Classement pilotes ====\n")
+	log.Printf("\n\n==== Drivers Ranking ====\n")
 	driversRank := c.CalcDriverRank()
 	driversRankTab := make([]*DriverTotalPoints, 0)
 	personalityRankTab := make([]*PersonalityAveragePoints, 0)
@@ -116,7 +116,7 @@ func (c *Championship) DisplayDriverRank() ([]*DriverTotalPoints, []*Personality
 	for i, driver := range driversRank {
 		driverRank := NewDriverTotalPoints(driver.Lastname, driver.ChampionshipPoints)
 
-		//On ajoute les points du pilote à la personnalité
+		// Add drivers points to the personalities
 		for personnality, level := range driver.Personality.TraitsValue {
 			if _, ok := personnalityAverage[personnality]; !ok {
 				personnalityAverage[personnality] = make(map[int]float64)
@@ -126,7 +126,7 @@ func (c *Championship) DisplayDriverRank() ([]*DriverTotalPoints, []*Personality
 			nb[personnality][level] += 1
 		}
 
-		//Si la personnalité est déjà dans le tableau, on ajoute le nombre de points. Sinon, on crée un nouvel objet
+		// If personality already in the array, add the points. Else, create a new personality in the array
 		var found bool
 		for indPers := range personalityRankTab {
 			if personalityRankTab[indPers].Personality["Aggressivity"] == driver.Personality.TraitsValue["Aggressivity"] &&
@@ -146,7 +146,6 @@ func (c *Championship) DisplayDriverRank() ([]*DriverTotalPoints, []*Personality
 			perso.TraitsValue["Aggressivity"] = driver.Personality.TraitsValue["Aggressivity"]
 			perso.TraitsValue["Docility"] = driver.Personality.TraitsValue["Docility"]
 			perso.TraitsValue["Concentration"] = driver.Personality.TraitsValue["Concentration"]
-			//on ne peut pas passer le map directement en paramètre, il faut le copier
 			personalityRank := NewPersonalityAveragePoints(perso.TraitsValue, driver.ChampionshipPoints, 1)
 			personalityRankTab = append(personalityRankTab, personalityRank)
 		}
@@ -157,7 +156,7 @@ func (c *Championship) DisplayDriverRank() ([]*DriverTotalPoints, []*Personality
 		driversRankTab = append(driversRankTab, driverRank)
 
 	}
-	//Calcule des moyennes
+	// Compute means
 	for indPers := range personalityRankTab {
 		if personalityRankTab[indPers].NbDrivers > 1 {
 			personalityRankTab[indPers].AveragePoints = personalityRankTab[indPers].AveragePoints / float64(personalityRankTab[indPers].NbDrivers)
@@ -174,7 +173,7 @@ func (c *Championship) DisplayDriverRank() ([]*DriverTotalPoints, []*Personality
 		}
 	}
 
-	//Calcule des moyennes de personnalités
+	// Compute personalities means
 	for personnality, level := range personnalityAverage {
 		for level, points := range level {
 			personnalityAverage[personnality][level] = points / float64(nb[personnality][level])
@@ -185,7 +184,7 @@ func (c *Championship) DisplayDriverRank() ([]*DriverTotalPoints, []*Personality
 }
 
 func (c *Championship) DisplayPersonalityRepartition() {
-	log.Printf("\n\n====Répartition des personnalités ====\n")
+	log.Printf("\n\n==== Distribution of personalities ====\n")
 	driverRank := c.CalcDriverRank()
 
 	aggressivity_value_5 := 0
@@ -214,31 +213,31 @@ func (c *Championship) DisplayPersonalityRepartition() {
 			}
 		}
 		if i == 4 {
-			log.Printf("Répartition du niveau agressivité du top 5 : \n")
-			log.Printf("Agressivité 5 : %d", aggressivity_value_5)
-			log.Printf("Agressivité 4 : %d", aggressivity_value_4)
-			log.Printf("Agressivité 3 : %d", aggressivity_value_3)
-			log.Printf("Agressivité 2 : %d", aggressivity_value_2)
-			log.Printf("Agressivité 1 : %d", aggressivity_value_1)
-			log.Printf("Agressivité 0 : %d", aggressivity_value_0)
+			log.Printf("Distribution of aggressiveness level in the top 5: \n")
+			log.Printf("Aggressiveness 5 : %d", aggressivity_value_5)
+			log.Printf("Aggressiveness 4 : %d", aggressivity_value_4)
+			log.Printf("Aggressiveness 3 : %d", aggressivity_value_3)
+			log.Printf("Aggressiveness 2 : %d", aggressivity_value_2)
+			log.Printf("Aggressiveness 1 : %d", aggressivity_value_1)
+			log.Printf("Aggressiveness 0 : %d", aggressivity_value_0)
 		}
 		if i == 9 {
-			log.Printf("Répartition du niveau agressivité du top 10 : \n")
-			log.Printf("Agressivité 5 : %d", aggressivity_value_5)
-			log.Printf("Agressivité 4 : %d", aggressivity_value_4)
-			log.Printf("Agressivité 3 : %d", aggressivity_value_3)
-			log.Printf("Agressivité 2 : %d", aggressivity_value_2)
-			log.Printf("Agressivité 1 : %d", aggressivity_value_1)
-			log.Printf("Agressivité 0 : %d", aggressivity_value_0)
+			log.Printf("Distribution of aggressiveness level in the top 10: \n")
+			log.Printf("Aggressiveness 5 : %d", aggressivity_value_5)
+			log.Printf("Aggressiveness 4 : %d", aggressivity_value_4)
+			log.Printf("Aggressiveness 3 : %d", aggressivity_value_3)
+			log.Printf("Aggressiveness 2 : %d", aggressivity_value_2)
+			log.Printf("Aggressiveness 1 : %d", aggressivity_value_1)
+			log.Printf("Aggressiveness 0 : %d", aggressivity_value_0)
 		}
 		if i == 14 {
-			log.Printf("Répartition du niveau agressivité du top 15 : \n")
-			log.Printf("Agressivité 5 : %d", aggressivity_value_5)
-			log.Printf("Agressivité 4 : %d", aggressivity_value_4)
-			log.Printf("Agressivité 3 : %d", aggressivity_value_3)
-			log.Printf("Agressivité 2 : %d", aggressivity_value_2)
-			log.Printf("Agressivité 1 : %d", aggressivity_value_1)
-			log.Printf("Agressivité 0 : %d", aggressivity_value_0)
+			log.Printf("Distribution of aggressiveness level in the top 15: \n")
+			log.Printf("Aggressiveness 5 : %d", aggressivity_value_5)
+			log.Printf("Aggressiveness 4 : %d", aggressivity_value_4)
+			log.Printf("Aggressiveness 3 : %d", aggressivity_value_3)
+			log.Printf("Aggressiveness 2 : %d", aggressivity_value_2)
+			log.Printf("Aggressiveness 1 : %d", aggressivity_value_1)
+			log.Printf("Aggressiveness 0 : %d", aggressivity_value_0)
 		}
 	}
 }

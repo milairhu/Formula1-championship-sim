@@ -63,7 +63,7 @@ func (rsa *RestServer) resetRaceSimulation(w http.ResponseWriter, r *http.Reques
 }
 
 func (rsa *RestServer) startRaceSimulation(w http.ResponseWriter, r *http.Request) {
-	if firstSimulation { //Initialise le championnat si premier lancement de la simulation course-par-course
+	if firstSimulation { //Initialize championship if this is the first race
 		championship = types.NewChampionship(nextChampionship, nextChampionship, rsa.pointTabCircuit, rsa.pointTabTeam)
 		firstSimulation = false
 	}
@@ -73,11 +73,11 @@ func (rsa *RestServer) startRaceSimulation(w http.ResponseWriter, r *http.Reques
 	}
 	fmt.Println("GET /simulateRace")
 
-	//On simule la course i
+	//Simulation of race i
 
 	if i <= len(championship.Circuits) {
 
-		//Création de la course
+		//Creating race
 		var id = championship.Circuits[i].Name + " " + championship.Name
 		raceStatistics.Championship = championship.Name
 		raceStatistics.Race = championship.Circuits[i].Name
@@ -89,20 +89,20 @@ func (rsa *RestServer) startRaceSimulation(w http.ResponseWriter, r *http.Reques
 		var meteo = championship.Circuits[i].GenerateMeteo()
 		new_Race := types.NewRace(id, championship.Circuits[i], date, championship.Teams, meteo)
 
-		//Simulation de la course
+		//Simulation of the race
 		pointsMap, err := new_Race.SimulateRace()
 		if err != nil {
 			log.Printf("Erreur simulation cours %s : %s\n", new_Race.Id, err.Error())
 		}
 
-		// Ajout points gagnés au points du championnat
+		// Adding points to the championship
 		for indT := range championship.Teams {
 			for indD := range championship.Teams[indT].Drivers {
 				championship.Teams[indT].Drivers[indD].ChampionshipPoints += pointsMap[championship.Teams[indT].Drivers[indD].Id]
 			}
 		}
 
-		// Points des pilotes pour la course
+		// Points of drivers for the race
 		driversRankTab := make([]*types.DriverTotalPoints, 0)
 
 		// personality Average
@@ -142,14 +142,13 @@ func (rsa *RestServer) startRaceSimulation(w http.ResponseWriter, r *http.Reques
 				perso.TraitsValue["Aggressivity"] = driver.Personality.TraitsValue["Aggressivity"]
 				perso.TraitsValue["Docility"] = driver.Personality.TraitsValue["Docility"]
 				perso.TraitsValue["Concentration"] = driver.Personality.TraitsValue["Concentration"]
-				//on ne peut pas passer le map directement en paramètre, il faut le copier
 				personalityRank := types.NewPersonalityAveragePoints(perso.TraitsValue, pointsMap[driver.Id], 1)
 				personalityRankTab = append(personalityRankTab, personalityRank)
 			}
 
 		}
 
-		//Calcule des moyennes
+		// Compute means
 		for indPers := range personalityRankTab {
 			if personalityRankTab[indPers].NbDrivers > 1 {
 				personalityRankTab[indPers].AveragePoints = personalityRankTab[indPers].AveragePoints / float64(personalityRankTab[indPers].NbDrivers)
@@ -166,7 +165,7 @@ func (rsa *RestServer) startRaceSimulation(w http.ResponseWriter, r *http.Reques
 			}
 		}
 
-		//Calcule des moyennes de personnalités
+		//Compute personality means
 		for personnality, level := range personnalityAverage {
 			for level, points := range level {
 				personnalityAverage[personnality][level] = points / float64(nb[personnality][level])
@@ -211,7 +210,7 @@ func (rsa *RestServer) startRaceSimulation(w http.ResponseWriter, r *http.Reques
 		}
 		raceStatistics.Highlights = raceHighlightsTab
 
-		// Incrémenter le compteur de course
+		// Inc. races count
 		i++
 	}
 

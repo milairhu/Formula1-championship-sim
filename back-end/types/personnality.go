@@ -5,7 +5,7 @@ import (
 )
 
 type Personality struct {
-	TraitsValue map[string]int `json:"personality"` // Dictionnaire de traits
+	TraitsValue map[string]int `json:"personality"` // Dictionnary of traits
 }
 
 func NewPersonality(traitsValue map[string]int) *Personality {

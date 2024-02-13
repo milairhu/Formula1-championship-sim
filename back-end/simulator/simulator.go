@@ -8,7 +8,7 @@ import (
 )
 
 type Simulator struct {
-	Championships []types.Championship //Contient les championnats à simuler. Nous n'en passons qu'un en se servant d'un simulator différent pour chaque championnat
+	Championships []types.Championship // championships to simulate. Each championship contains a list of circuits and teams
 }
 
 func NewSimulator(championships []types.Championship) *Simulator {
@@ -27,13 +27,13 @@ func (s *Simulator) LaunchSimulation() ([]*types.DriverTotalPoints, []*types.Tea
 	var personalityAveragePoints []*types.PersonalityAveragePoints
 	var personnalityAverage map[string]map[int]float64
 
-	log.Println("Lancement d'une nouvelle simulation...")
+	log.Println("Launching new simulation...")
 	for _, championship := range s.Championships {
-		//On simule chaque championnat
-		log.Printf("Lancement d'un nouveau championnat : %s...\n", championship.Name)
+		// Simulate each championship
+		log.Printf("Launching new championship : %s...\n", championship.Name)
 		for i, circuit := range championship.Circuits {
-			//On simule chaque course
-			//Etape 1 : on crée la course
+			// Simulate each race
+			// Step 1 : create race
 			var id = circuit.Name + " " + championship.Name
 
 			var date = time.Now()
@@ -43,23 +43,23 @@ func (s *Simulator) LaunchSimulation() ([]*types.DriverTotalPoints, []*types.Tea
 			var meteo = circuit.GenerateMeteo()
 			new_Race := types.NewRace(id, circuit, date, championship.Teams, meteo)
 
-			//Etape 2 (la principale) : on joue la course
+			//Step 2 (main step) : simulate
 			pointsMap, err := new_Race.SimulateRace()
 			if err != nil {
-				log.Printf("Erreur simulation cours %s : %s\n", new_Race.Id, err.Error())
+				log.Printf("Error simulation race %s : %s\n", new_Race.Id, err.Error())
 			}
 
-			//On enregistre les points gagnés par chaque pilote
+			// Record points earned by each driver
 			for indT := range championship.Teams {
 				for indD := range championship.Teams[indT].Drivers {
 					championship.Teams[indT].Drivers[indD].ChampionshipPoints += pointsMap[championship.Teams[indT].Drivers[indD].Id]
 				}
 			}
-			//Etape 3 : on ajoute la course au championnat
+			//Step 3 : add the race to the championship
 			championship.Races[i] = *new_Race
 		}
-		//On affiche le classement du championnat
-		log.Printf("\n\n===== Classements du championnat %s =====\n", championship.Name)
+		// Display championship rank
+		log.Printf("\n\n===== Championship ranking %s =====\n", championship.Name)
 		teamTotalPoints = championship.DisplayTeamRank()
 		driverTotalPoints, personalityAveragePoints, personnalityAverage = championship.DisplayDriverRank()
 

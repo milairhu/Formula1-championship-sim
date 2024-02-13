@@ -25,11 +25,11 @@ func NewCircuit(id string, name string, country string, portions []Portion, mete
 	}
 }
 
-/*MeteoDistribution est construit de la sorte : [40,70].
-* Ce cas signifie que 40% du temps, le temps sera RAINY, 30% DRY, 30% HEAT
+/*MeteoDistribution is built as follow : [40,70].
+* Means that in 40% of the cases, weather is RAINY, 30% DRY, 30% HEAT
  */
 func (c *Circuit) GenerateMeteo() Meteo {
-	var dice int = rand.Intn(100) //génère nombre entre 0 et 99
+	var dice int = rand.Intn(100) //generate number between 0 and 99
 	if dice < c.MeteoDistribution[0] {
 		return RAINY
 	}

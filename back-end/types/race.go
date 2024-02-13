@@ -40,34 +40,34 @@ func NewRace(id string, circuit *Circuit, date time.Time, teams []*Team, meteo M
 }
 
 func (r *Race) SimulateRace() (map[string]int, error) {
-	log.Printf("	Lancement d'une nouvelle course : %s...\n", r.Id)
+	log.Printf("Launching new race: %s...\n", r.Id)
 
-	//Création du map partagé
+	// Creating the shared map
 	mapChan := sync.Map{}
 	for _, t := range r.Teams {
 		for _, d := range t.Drivers {
 			mapChan.Store(d.Id, make(chan Action))
 		}
 	}
-	//On crée les instances des pilotes en course
+	// Creating instances of drivers in the race
 
 	drivers, err := MakeSliceOfDriversInRace(r.Teams, &(r.Circuit.Portions[0]), mapChan, r.MeteoCondition)
 	if err != nil {
 		return nil, err
 	}
 	drivers = ShuffleDrivers(drivers)
-	log.Println("\n\nLigne de départ:")
+	log.Println("\n\nStarting Line:")
 	for i := range drivers {
-		log.Printf("%d : %s %s\n", len(drivers)-i, drivers[i].Driver.Firstname, drivers[i].Driver.Lastname)
+		log.Printf("%d: %s %s\n", len(drivers)-i, drivers[i].Driver.Firstname, drivers[i].Driver.Lastname)
 	}
 
-	//On met tous les agents sur la ligne de départ :
+	// Putting all drivers on the starting line
 	for _, driver := range drivers {
 		driver.Position.AddDriverOn(driver)
 	}
-	log.Println("Les pilotes sont sur la ligne de départ")
-	//On lance les agents pilotes
-	log.Println("Début de la course...")
+	log.Println("Drivers are on the starting line")
+	// Starting driver agents
+	log.Println("Race begins...")
 	for _, driver := range drivers {
 		go driver.Start(driver.Position, r.Circuit.NbLaps)
 	}
@@ -75,18 +75,18 @@ func (r *Race) SimulateRace() (map[string]int, error) {
 	var nbDrivers = len(r.Teams) * 2
 	decisionMap := make(map[string]Action, nbDrivers)
 
-	//On simule tant que tous les pilotes n'ont pas fini la course
+	// Simulating until all drivers finish the race
 	for nbFinish < nbDrivers {
-		//Chaque pilote, dans un ordre aléatoire, réalise les tests sur la proba de dépasser etc...
+		// Each driver, in a random order, performs tests on overtaking probability, etc...
 		drivers = ShuffleDrivers(drivers)
 
 		for i := range drivers {
-			//On débloque les pilotes en course pour qu'ils prennent une décision
+			// Releasing racing drivers to make decisions
 			if drivers[i].Status == CRASHED || drivers[i].Status == ARRIVED {
-				continue //Obligatoire car il ne faut attendre que les pilotes qui courent encore
+				continue // Necessary to wait only for racing drivers
 			}
 
-			// On ajoute une pénalité aléatoire sur l'usure des pneus si il fait chaud
+			// Adding a random penalty for tire wear if it's hot
 			dice := rand.Intn(100)
 			if r.MeteoCondition == HEAT && dice < 25 {
 				drivers[i].TimeWoPitStop += 5
@@ -94,15 +94,15 @@ func (r *Race) SimulateRace() (map[string]int, error) {
 
 			drivers[i].ChanEnv <- 1
 		}
-		// On récupère les décisions des pilotes
+		// Retrieving drivers' decisions
 		for i := range drivers {
 			if drivers[i].Status == CRASHED || drivers[i].Status == ARRIVED {
-				continue //Obligatoire car il ne faut attendre que les pilotes qui courent encore
+				continue // Necessary to wait only for racing drivers
 			}
 			decisionMap[drivers[i].Driver.Id] = <-drivers[i].ChanEnv
 		}
 
-		//On traite les décisions et on met à jour les positions des pilotes
+		// Processing decisions and updating drivers' positions
 		for i := range drivers {
 			if drivers[i].Status == CRASHED || drivers[i].Status == ARRIVED {
 				continue
@@ -110,83 +110,83 @@ func (r *Race) SimulateRace() (map[string]int, error) {
 			decision := decisionMap[drivers[i].Driver.Id]
 			switch decision {
 			case TRY_OVERTAKE:
-				//On vérifie si le pilote peut bien dépasser
+				// Checking if the driver can overtake
 				driverToOvertake, err := drivers[i].DriverToOvertake()
 				if err != nil {
 					log.Printf("Error while getting driver to overtake: %s\n", err)
 				}
 				if driverToOvertake != nil {
-					//On vérifie si le pilote a réussi son dépassement
+					// Checking if the driver successfully overtakes
 					success, crashedDrivers := drivers[i].Overtake(driverToOvertake)
 
 					if len(crashedDrivers) > 0 {
-						//On crée un Highlight de crash
+						// Creating a crash highlight
 						highlight, err := NewHighlight(crashedDrivers, CRASHOVERTAKE)
 						if err != nil {
 							log.Printf("Error while creating highlight: %s\n", err)
 						}
 						r.HighLigths = append(r.HighLigths, *highlight)
 						log.Println(highlight.Description)
-						//On supprime les pilotes crashés
+						// Removing crashed drivers
 						for ind := range crashedDrivers {
 							crashedDrivers[ind].Status = CRASHED
-							r.FinalResult = append(r.FinalResult, crashedDrivers[ind].Driver) //on l'ajoute au tableau
+							r.FinalResult = append(r.FinalResult, crashedDrivers[ind].Driver) // adding to the list
 							drivers[i].Position.RemoveDriverOn(crashedDrivers[ind])
 							nbFinish++
 						}
 					}
 
 					if success {
-						//On crée un Highlight de dépassement
+						// Creating an overtaking highlight
 						highlight, err := NewHighlight([]*DriverInRace{drivers[i], driverToOvertake}, OVERTAKE)
 						if err != nil {
 							log.Printf("Error while creating highlight: %s\n", err)
 						}
 						r.HighLigths = append(r.HighLigths, *highlight)
 						log.Println(highlight.Description)
-						//On met à jour les positions
+						// Updating positions
 						drivers[i].Position.SwapDrivers(drivers[i], driverToOvertake)
 					}
 
 				}
 			case CONTINUE:
-				//On vérifie juste si le pilote réussi à passer la portion
+				// Checking if the driver succeeds in passing the portion
 
-				pénalité := 0
+				penalty := 0
 
 				if r.MeteoCondition == RAINY {
-					pénalité = 25
+					penalty = 25
 				}
 
-				success := drivers[i].PortionSuccess(pénalité)
+				success := drivers[i].PortionSuccess(penalty)
 
 				if !success {
-					// En cas de crash la confiance et la docilité du pilote est impacté
+					// In case of a crash, the driver's confidence and docility are affected
 					if drivers[i].Driver.Personality.TraitsValue["Confidence"] > 1 {
 						drivers[i].Driver.Personality.TraitsValue["Confidence"] -= 1
 					}
 					if drivers[i].Driver.Personality.TraitsValue["Docility"] < 5 {
 						drivers[i].Driver.Personality.TraitsValue["Docility"] += 1
 					}
-					//On crée un Highlight de crash
+					// Creating a crash highlight
 					highlight, err := NewHighlight([]*DriverInRace{drivers[i]}, CRASHPORTION)
 					if err != nil {
 						log.Printf("Error while creating highlight: %s\n", err)
 					}
 					r.HighLigths = append(r.HighLigths, *highlight)
 					log.Println(highlight.Description)
-					//On supprime le pilote crashé
+					// Removing crashed driver
 					drivers[i].Status = CRASHED
-					r.FinalResult = append(r.FinalResult, drivers[i].Driver) //on l'ajoute au tableau
+					r.FinalResult = append(r.FinalResult, drivers[i].Driver) // adding to the list
 					drivers[i].Position.RemoveDriverOn(drivers[i])
 					nbFinish++
 				}
 
 			case NOOP:
-				//On ne fait rien
+				// Do nothing
 
 				if (drivers[i].Status == PITSTOP || drivers[i].Status == PITSTOP_CHANGETYRE) && drivers[i].PitstopSteps == 3 {
-					// On crée un highlight de pitstop
+					// Creating a pitstop highlight
 					var highlight *Highlight
 					var err error
 					switch drivers[i].Status {
@@ -206,7 +206,7 @@ func (r *Race) SimulateRace() (map[string]int, error) {
 				}
 
 			case ACCIDENTPNEUS:
-				//On crée un Highlight de crash
+				// Creating a crash highlight
 				highlight, err := NewHighlight([]*DriverInRace{drivers[i]}, CREVAISON)
 				if err != nil {
 					log.Printf("Error while creating highlight: %s\n", err)
@@ -215,35 +215,35 @@ func (r *Race) SimulateRace() (map[string]int, error) {
 				log.Println(highlight.Description)
 
 				drivers[i].Status = CRASHED
-				r.FinalResult = append(r.FinalResult, drivers[i].Driver) //on l'ajoute au tableau
+				r.FinalResult = append(r.FinalResult, drivers[i].Driver) // Add it to the array
 				drivers[i].Position.RemoveDriverOn(drivers[i])
 				nbFinish++
 
 			}
 		}
 
-		//On fait avancer tout les pilotes n'ayant pas fini la course, n'étant pas crashés et n'étant pas en pitstop
-		newDriversOnPortion := make([][]*DriverInRace, len(r.Circuit.Portions)) //stocke les nouvelles positions des pilotes
+		// Move all drivers who haven't finished the race, aren't crashed, and aren't in pitstop
+		newDriversOnPortion := make([][]*DriverInRace, len(r.Circuit.Portions)) // Store the new positions of the drivers
 		for i := range r.Circuit.Portions {
 			for _, driver := range r.Circuit.Portions[i].DriversOn {
 				previousPortion := driver.Position
 				if driver.Status != CRASHED && driver.Status != ARRIVED && (driver.Status != PITSTOP && driver.Status != PITSTOP_CHANGETYRE) {
-					//On met à jour le champ position du pilote
+					// Update the driver's position field
 					driver.Position = driver.Position.NextPortion
 					if i == len(r.Circuit.Portions)-1 {
-						log.Println("Tour ", driver.NbLaps, " pour ", driver.Driver.Lastname)
-						//Si on a fait un tour
+						log.Println("Turn ", driver.NbLaps, " for ", driver.Driver.Lastname)
+						// If we completed a lap
 						driver.NbLaps += 1
 						if driver.NbLaps == r.Circuit.NbLaps {
-							//Si on a fini la course, on enlève le pilote du circuit et on le met dans le classement
-							//On crée un Highlight d'arrivée
+							// If we finished the race, remove the driver from the circuit and put them in the ranking
+							// Create a finish highlight
 							highlight, err := NewHighlight([]*DriverInRace{driver}, FINISH)
 							if err != nil {
 								log.Printf("Error while creating highlight: %s\n", err)
 							}
 							r.HighLigths = append(r.HighLigths, *highlight)
 							log.Println(highlight.Description)
-							//On signal que le coureur a fini la course
+							// Signal that the driver finished the race
 							driver.Status = ARRIVED
 							nbFinish++
 							r.FinalResult = append(r.FinalResult, driver.Driver)
@@ -253,7 +253,7 @@ func (r *Race) SimulateRace() (map[string]int, error) {
 				if driver.Status == PITSTOP || driver.Status == PITSTOP_CHANGETYRE {
 					newDriversOnPortion[i] = append(newDriversOnPortion[i], driver)
 				} else if driver.Speed > 5 && (driver.Status != CRASHED && driver.Status != ARRIVED) {
-					// Si le pilote est actuellement premier sur sa portion et qu'il n'y a personne sur le portion i+1
+					// If the driver is currently first on their portion and there is no one on portion i+1
 					canJump := r.Circuit.Portions[i].DriversOn[0] == driver && len(r.Circuit.Portions[(i+1)%len(r.Circuit.Portions)].DriversOn) == 0
 					dice := rand.Intn(15) + 1
 					if canJump && dice < driver.Speed {
@@ -264,35 +264,35 @@ func (r *Race) SimulateRace() (map[string]int, error) {
 					}
 
 				} else if driver.Speed <= 5 && (driver.Status != CRASHED && driver.Status != ARRIVED) {
-					// Si le pilote est actuellement dernier sur sa portion et qu'il ne va pas très vite, il peut "stagner"
+					// If the driver is currently last on their portion and not going very fast, they can "stagnate"
 					canStay := r.Circuit.Portions[i].DriversOn[len(r.Circuit.Portions[i].DriversOn)-1] == driver
 					dice := rand.Intn(6) + 1
-					if canStay && dice > driver.Speed { // A vitesse = 5, chance de rester = 1/6, à vitesse = 1, chance de rester = 5/6
+					if canStay && dice > driver.Speed { // At speed = 5, chance to stay = 1/6, at speed = 1, chance to stay = 5/6
 						driver.Position = previousPortion
-						driver.Speed++ // On augmente la vitesse du pilote pour éviter qu'il reste 1000 ans sur la même portion
+						driver.Speed++ // Increase the driver's speed to avoid them staying on the same portion for a long time
 						newDriversOnPortion[i] = append(newDriversOnPortion[i], driver)
 					} else {
 						newDriversOnPortion[(i+1)%len(r.Circuit.Portions)] = append(newDriversOnPortion[(i+1)%len(r.Circuit.Portions)], driver)
 					}
 				} else if driver.Status != CRASHED && driver.Status != ARRIVED {
-					//On ajoute le pilote à sa nouvelle position
+					// Add the driver to their new position
 					newDriversOnPortion[(i+1)%len(r.Circuit.Portions)] = append(newDriversOnPortion[(i+1)%len(r.Circuit.Portions)], driver)
 				}
 			}
 		}
 
-		//On met à jour les positions des pilotes
+		// Update the drivers' positions
 		for i := range r.Circuit.Portions {
-			r.Circuit.Portions[i].DriversOn = make([]*DriverInRace, len(newDriversOnPortion[i])) //on écrase l'ancien slice
-			copy(r.Circuit.Portions[i].DriversOn, newDriversOnPortion[i])                        //on remplace par le nouveau
+			r.Circuit.Portions[i].DriversOn = make([]*DriverInRace, len(newDriversOnPortion[i])) // Overwrite the old slice
+			copy(r.Circuit.Portions[i].DriversOn, newDriversOnPortion[i])                        // Replace with the new one
 		}
 	}
-	//On affiche le classement
-	log.Println("\n\nClassement final :")
+	// Display the ranking
+	log.Println("\n\nFinal ranking:")
 	for i := range r.FinalResult {
 		log.Printf("%d : %s %s\n", len(r.FinalResult)-i, r.FinalResult[i].Firstname, r.FinalResult[i].Lastname)
 	}
-	//On retourne le classement et les points attribués
+	// Return the ranking and the points awarded
 	res := r.CalcDriversPoints()
 	return res, nil
 }
@@ -303,24 +303,24 @@ func (r *Race) CalcDriversPoints() map[string]int {
 	for i := 0; i < len(r.FinalResult); i++ {
 		res[r.FinalResult[i].Id] = 0
 	}
-	//Le premier obtient 25 points
+	// The first one gets 25 points
 	res[r.FinalResult[n-1].Id] = 25
 
-	//Le deuxième obtient 18 points
+	// The second one gets 18 points
 	res[r.FinalResult[n-2].Id] = 18
 
-	//Le troisième obtient 15 points
+	// The third one gets 15 points
 	res[r.FinalResult[n-3].Id] = 15
 
-	//Le quatrième obtient 12 points
+	// The fourth one gets 12 points
 	res[r.FinalResult[n-4].Id] = 12
 
-	// Le cinquième obtient 10 points, et on décremente de 2 jusqu'au neuvième
+	// The fifth one gets 10 points, and we decrement by 2 until the ninth one
 	for i := 1; i <= 5; i++ {
 		res[r.FinalResult[n-4-i].Id] = 12 - 2*i
 	}
 
-	//Le dixième obtient 1 point
+	// The tenth one gets 1 point
 	res[r.FinalResult[n-10].Id] = 1
 
 	return res
