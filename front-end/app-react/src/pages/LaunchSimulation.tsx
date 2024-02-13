@@ -90,15 +90,15 @@ const LaunchSimulation: FunctionComponent<{}> = ({}) => {
     <>
       <div className="w-100 text-center bg-gray-700 text-white text-xl border rounded-lg p-2">
         <span>
-          Statistiques sur les{" "}
+          Stats on the{" "}
           {simulationSummary?.nbSimulations
             ? simulationSummary.nbSimulations
             : 0}{" "}
-          championnats simulés
+          simulated championship
         </span>
         <span className="text-sm">
           {" "}
-          (dernier :{" "}
+          (last :{" "}
           {simulationSummary?.lastChampionship
             ? simulationSummary.lastChampionship
             : "N/A"}
@@ -143,7 +143,7 @@ const LaunchSimulation: FunctionComponent<{}> = ({}) => {
             onClick={handleReset}
             disabled={isRunning}
           >
-            Reinitialize all
+            Reinit all
           </button>
         </div>
       </div>

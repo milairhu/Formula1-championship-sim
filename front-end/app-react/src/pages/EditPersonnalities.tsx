@@ -125,7 +125,7 @@ function updatePersonalitiesChart(driversData : any[]) {
   return (
     <>
       <div className="w-100 text-center bg-gray-700 text-white text-xl border rounded-lg p-2">
-        Modifier les personnalités
+        Edit personalities
       </div>
       <div className="w-100 flex justify-around h-full">
         <div className="w-4/12">
@@ -133,11 +133,11 @@ function updatePersonalitiesChart(driversData : any[]) {
             <table className="w-full h-full overflow-auto my-8 table-auto border border-gray-300 p-2 ">
               <thead>
                 <tr>
-                  <th className="text-left pl-1">Pilote</th>
-                  <th className="text-center">Agressivité</th>
+                  <th className="text-left pl-1">Driver</th>
+                  <th className="text-center">Agressiveness</th>
                   <th className="text-center">Concentration</th>
-                  <th className="text-center">Confiance</th>
-                  <th className="text-center">Docilité</th>
+                  <th className="text-center">Confidence</th>
+                  <th className="text-center">Docility</th>
                 </tr>
               </thead>
               <tbody>
@@ -188,11 +188,11 @@ function updatePersonalitiesChart(driversData : any[]) {
                 ))}
               </tbody>
             </table>
-          <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded" type="submit">Enregistrer</button>
+          <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded" type="submit">Save</button>
         </form>
       </div>
       <div className="w-7/12 flex items-center justify-center">
-        <BarChart title={"Répartition des personnalités"} chartData={personalitiesChart}/>
+        <BarChart title={"Distribution of personalities"} chartData={personalitiesChart}/>
       </div>
       
     

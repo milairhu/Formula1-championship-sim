@@ -25,11 +25,12 @@ Original repositories:
 The project can be cloned with the following commands:
 
     git clone https://github.com/milairhu/Formula1-championship-sim.git
+
+### Launching the programs
+
 **After cloning** the frontend, it may be necessary to install dependencies.Navigate to *font-end/app-react* and execute the command:
 
     npm i
-
-### Launching the programs
 
 In the command line, the user interface is launched from the *front-end/app-react* subdirectory with **npm**:
 
