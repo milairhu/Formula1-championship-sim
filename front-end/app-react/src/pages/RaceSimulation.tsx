@@ -62,7 +62,7 @@ const RaceSimulation = () => {
   return (
     <>
       <div className="w-100 text-center bg-gray-700 text-white text-xl border rounded-lg p-2">
-        <span>Simulations course par course</span>
+        <span>Simulations race by race</span>
       </div>
       <div className="w-full mt-5 mb-2 flex pb-4 border-b-2 border-gray-500">
         <div className=" flex w-8/12  w-full items-center ">
@@ -76,7 +76,7 @@ const RaceSimulation = () => {
                   : " bg-red-500 hover:bg-red-700"
               }  text-white font-bold py-2 px-4 rounded`}
             >
-              {"Lancer la simulation"}
+              {"Launch a simulation"}
             </button>
           </div>
         </div>
@@ -90,7 +90,7 @@ const RaceSimulation = () => {
             } ml-auto text-white font-bold py-2 px-4 rounded`}
             disabled={isRunning}
           >
-            Réinitialiser tout
+            Reinitialize all
           </button>
         </div>
       </div>
@@ -99,9 +99,9 @@ const RaceSimulation = () => {
         <div className="border-2 shadow-lg rounded-xl p-4 mt-4 mb-4">
           <div className="flex items-center justify-center w-full">
             <span className="bg-gray-500 text-white rounded-xl p-1 pl-3 pr-3">
-              Résultats de la simulation : {simulationHistory[page - 1]?.race}{" "}
+              Results of the simulation : {simulationHistory[page - 1]?.race}{" "}
               {simulationData?.championship}{" "}
-              {simulationData?.isLastRace && "(fin du championnat)"}
+              {simulationData?.isLastRace && "(end of the championship)"}
             </span>
           </div>
           <div className="flex justify-around items-center">
@@ -141,20 +141,20 @@ const RaceSimulation = () => {
         <div className="border-2 shadow-lg rounded-xl p-4 mt-4 mb-4">
           <div className="flex items-center justify-center w-full">
             <span className=" bg-gray-500 text-white rounded-xl p-1 pl-3 pr-3">
-              Personnalités
+              Personalities
             </span>
           </div>
           <div className="flex justify-around items-end">
             <div className="w-7/12">
               <div className="text-sm">
-                Nombre de profils différents étudiés :{" "}
+                Number of different profiles explored :{" "}
                 {
                   simulationHistory[page - 1]?.championshipStatistics
                     .personalityAveragePoints.length
                 }
               </div>
               <PersonalityBarChart
-                title={"Moyenne de points par profil"}
+                title={"Avecrage of points per profile"}
                 personalityStatistics={
                   simulationHistory[page - 1]?.championshipStatistics
                     .personalityAveragePoints

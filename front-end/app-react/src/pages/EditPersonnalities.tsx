@@ -47,7 +47,7 @@ function handleSubmit(event) {
   })
 }
 
-// Fonction de gestion des modifications de traits
+// Handle traits modification
 const handleTraitChange = (driverIndex, traitName, value) => {
   setDrivers(() =>  
     drivers.map((driver, index) => {
@@ -78,7 +78,7 @@ const [personalitiesChart, setPersonalitiesChart] = useState<any>({
 function updatePersonalitiesChart(driversData : any[]) {
   setPersonalitiesChart( () => {
 
-    //Création du map
+    //Create map
     const personalityCountMap = new Map();
     driversData.forEach((driver) => {
         const configString = JSON.stringify(driver.personality);
@@ -105,7 +105,7 @@ function updatePersonalitiesChart(driversData : any[]) {
       labels: labels,
       datasets: [
         {
-          label: "Nombre de pilotes",
+          label: "Number of pilotes",
           data: data,
           backgroundColor: [
             "red",

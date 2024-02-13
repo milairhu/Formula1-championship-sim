@@ -49,7 +49,7 @@ const LaunchSimulation: FunctionComponent<{}> = ({}) => {
     };
 
     if (isRunning) {
-      // Appeler fetchSimulationData immédiatement et ensuite toutes les 2 secondes
+      // Call fetchSimulationData immediately and then each 2 secondes
       fetchSimulationData();
       intervalId = setInterval(fetchSimulationData, 2000);
     }
@@ -116,7 +116,7 @@ const LaunchSimulation: FunctionComponent<{}> = ({}) => {
               }  text-white font-bold py-2 px-4 rounded`}
               onClick={handleSimulateAll}
             >
-              {isRunning ? "Arrêter la simulation" : "Lancer la simulation"}
+              {isRunning ? "Stop simulation" : "Launch  simulation"}
             </button>
           </div>
           <div className="ml-1">
@@ -129,7 +129,7 @@ const LaunchSimulation: FunctionComponent<{}> = ({}) => {
               onClick={handleSimulateOne}
               disabled={isRunning}
             >
-              Simuler un seul championnat
+              Simulate a single championship
             </button>
           </div>
         </div>
@@ -143,7 +143,7 @@ const LaunchSimulation: FunctionComponent<{}> = ({}) => {
             onClick={handleReset}
             disabled={isRunning}
           >
-            Réinitialiser tout
+            Reinitialize all
           </button>
         </div>
       </div>
@@ -152,7 +152,7 @@ const LaunchSimulation: FunctionComponent<{}> = ({}) => {
         <div className="border-2 shadow-lg rounded-xl p-4 mt-4 mb-4">
           <div className="flex items-center justify-center w-full">
             <span className="bg-gray-500 text-white rounded-xl p-1 pl-3 pr-3">
-              Pilotes
+              Drivers
             </span>
           </div>
           <div className="flex justify-around items-center">
@@ -180,7 +180,7 @@ const LaunchSimulation: FunctionComponent<{}> = ({}) => {
         <div className="border-2 shadow-lg rounded-xl p-4 mt-4 mb-4">
           <div className="flex items-center justify-center w-full">
             <span className=" bg-gray-500 text-white rounded-xl p-1 pl-3 pr-3">
-              Equipes
+              Teams
             </span>
           </div>
           <div className="flex justify-around items-center">
@@ -207,20 +207,20 @@ const LaunchSimulation: FunctionComponent<{}> = ({}) => {
         <div className="border-2 shadow-lg rounded-xl p-4 mt-4 mb-4">
           <div className="flex items-center justify-center w-full">
             <span className=" bg-gray-500 text-white rounded-xl p-1 pl-3 pr-3">
-              Personnalités
+              Personalities
             </span>
           </div>
           <div className="flex justify-around items-end">
             <div className="w-7/12">
               <div className="text-sm">
-                Nombre de profils différents étudiés :{" "}
+                Number of different profiles explored :{" "}
                 {simulationSummary?.lastChampionship
                   ? simulationSummary?.totalStatistics.personalityAveragePoints
                       .length
                   : 0}
               </div>
               <PersonalityBarChart
-                title={"Moyenne de points par profil et par championnat"}
+                title={"Points average per profile per championship"}
                 personalityStatistics={
                   simulationSummary?.totalStatistics.personalityAveragePoints
                 }

@@ -29,12 +29,12 @@ const DriversLastLineChart = ({statistics }) => {
 
 
     function updateDatasets(data) {
-      //Etape 1 : mise à jour du dataset
+      // Step 1 : update dataset
       let res = datasets;
         if (res.length === 0) {
           data.lastChampionshipStatistics.driversTotalPoints.forEach((driver) => {
             res.push({
-              label: "Total de points " + driver.driver,
+              label: "Total of points " + driver.driver,
               data: [driver.totalPoints],
               backgroundColor: teamColorsMap[driver.driver],
               borderColor: teamColorsMap[driver.driver],
@@ -44,20 +44,20 @@ const DriversLastLineChart = ({statistics }) => {
           })
         }
         else {
-          //Obligé de tester si lastChampionship est vide car sinon on risque d'ajouter des 0 inutiles
+          //Test if lastChampionship is null otherwise too many 0 could be added
           if (data.lastChampionship !== ""){
             res.forEach((d) => {
             data.lastChampionshipStatistics.driversTotalPoints.forEach((driver) => {
-              if (d.label === "Total de points " + driver.driver) {
+              if (d.label === "Total of points " + driver.driver) {
                 d.data.push(driver.totalPoints)
               }
             })
           })
           } else {
-            //on a réinitiliaisé le championnat, on réinitialise les datasets
+            //championship was reinit, reinitializing datasets
             res.forEach((d) => {
               data.lastChampionshipStatistics.driversTotalPoints.forEach((driver) => {
-                if (d.label === "Total de points " + driver.team) {
+                if (d.label === "Total of points " + driver.team) {
                   d.data = [driver.totalPoints]
                   d.backgroundColor = teamColorsMap[driver.team]
                   d.borderColor = teamColorsMap[driver.team]
@@ -68,7 +68,7 @@ const DriversLastLineChart = ({statistics }) => {
         }
       setDatasets(res)
 
-      //Etape 2 : mise à jour du lineChart
+      //Step 2 : update lineChart
       setLineChart(() => {
         let labels = lineChart.labels;
         if (data.lastChampionship == "" ) {
@@ -88,7 +88,7 @@ const DriversLastLineChart = ({statistics }) => {
 
 
     return (
-      <LineChart title={"Points des pilotes dans chaque championnat"} chartData={lineChart} />
+      <LineChart title={"Points of drivers in each championship"} chartData={lineChart} />
     );
 };
 

@@ -36,11 +36,11 @@ The project can be cloned with the following commands:
 
 ### Launching the programs
 
-In the command line, the user interface is launched from the *app-react* subdirectory with **npm**:
+In the command line, the user interface is launched from the *front-end/app-react* subdirectory with **npm**:
 
     npm run start
 
-As for the Go project, the user can either run the program with:
+As for the Go project, in the *back-end* directory, the user can either run the program with:
 
     go run cmd/launch-simulation.go
 

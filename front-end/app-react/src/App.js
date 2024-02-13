@@ -43,8 +43,8 @@ const App = () => {
         >
           <Tab label="Simulations" />
           {/*<Tab label="???" />*/}
-          <Tab label="Simulations course par course" />
-          <Tab label="Modification personnalités" />
+          <Tab label="Simulations race by race" />
+          <Tab label="Edit personalities" />
           {/*<Tab label="Stats générales" />*/}
         </Tabs>
       </Box>

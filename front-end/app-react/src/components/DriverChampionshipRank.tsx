@@ -36,10 +36,10 @@ const DriverChampionshipRank = ({driversStatistics, lastChamp }) => {
         <table className="w-full h-full table-auto border border-gray-300 p-2">
         <thead>
           <tr>
-            <th className="text-left pl-1 ">Rang</th>
-            <th className="text-center">Pilote</th>
+            <th className="text-left pl-1 ">Rank</th>
+            <th className="text-center">Driver</th>
             <th className="text-center">Tot. Points</th>
-            <th className="text-center">Points au dernier championnat</th>
+            <th className="text-center">Points at last champ.</th>
           </tr>
         </thead>
         <tbody>

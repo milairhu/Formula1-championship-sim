@@ -8,5 +8,5 @@ export const teamColorsMap = new Map([
   ['AlphaTauri', 'rgba(43, 69, 98, 1)'],
   ['Alfa Romeo Racing', 'rgba(144, 0, 0, 1)'],
   ['Williams', 'rgba(0, 90, 255, 1)'],
-  ['Haas', 'rgba(255, 255, 255, 1)'], // Haas n'a pas de couleur officielle, donc blanc par défaut
+  ['Haas', 'rgba(255, 255, 255, 1)'], 
 ]);
