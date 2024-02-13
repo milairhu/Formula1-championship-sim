@@ -25,14 +25,9 @@ Original repositories:
 The project can be cloned with the following commands:
 
     git clone https://github.com/milairhu/Formula1-championship-sim.git
-**After cloning**, for the frontend, it may be necessary to install dependencies. During our tests, it turned out that the following command was the only one to be executed to be able to correctly launch the project:
+**After cloning** the frontend, it may be necessary to install dependencies.Navigate to *font-end/app-react* and execute the command:
 
-    npm i react-chartjs-2
-
-**If the user does not clone the project but obtained the project via the IA04 repository**, all dependencies must be installed:
-
-* navigate to app-react
-* run the command *npm install* to install the dependencies.
+    npm i
 
 ### Launching the programs
 
