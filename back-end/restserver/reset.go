@@ -9,16 +9,16 @@ import (
 )
 
 func (rsa *RestServer) reset(w http.ResponseWriter, r *http.Request) {
-	// vérification de la méthode de la requête
+	// // check method of the request
 	if r.Method != "GET" {
 		return
 	}
 	fmt.Println("GET /reset")
-	// reset des variables globales
+	// reset global variables
 	nextChampionship = "2023/2024"
 	nbSimulation = 0
 	statistics = &types.SimulateChampionship{}
-	//Remet les pilotes à 0
+	//Reset drivers
 	for indTeam := range rsa.pointTabTeam {
 		for indDriv := range rsa.pointTabTeam[indTeam].Drivers {
 			driver := rsa.pointTabTeam[indTeam].Drivers[indDriv]
@@ -28,12 +28,11 @@ func (rsa *RestServer) reset(w http.ResponseWriter, r *http.Request) {
 		statistics.TotalStatistics.TeamsTotalPoints = append(statistics.TotalStatistics.TeamsTotalPoints, &types.TeamTotalPoints{Team: rsa.pointTabTeam[indTeam].Name, TotalPoints: 0})
 		statistics.LastChampionshipStatistics.TeamsTotalPoints = append(statistics.LastChampionshipStatistics.TeamsTotalPoints, &types.TeamTotalPoints{Team: rsa.pointTabTeam[indTeam].Name, TotalPoints: 0})
 	}
-	//On remet les personnalités à 0 dans le tableau d'équipes
+	//Reset personalities in array of teams
 	for indTeam := range rsa.pointTabTeam {
 		for indDriver := 0; indDriver < 2; indDriver++ {
 			var d string = rsa.pointTabTeam[indTeam].Drivers[indDriver].Id
 			var perso types.Personality
-			//Obligé de faire ça, sinon effet de bord sur initPersonalities
 			perso.TraitsValue = make(map[string]int)
 			perso.TraitsValue["Confidence"] = rsa.initPersonalities[d].TraitsValue["Confidence"]
 			perso.TraitsValue["Aggressivity"] = rsa.initPersonalities[d].TraitsValue["Aggressivity"]
@@ -42,7 +41,7 @@ func (rsa *RestServer) reset(w http.ResponseWriter, r *http.Request) {
 			rsa.pointTabTeam[indTeam].Drivers[indDriver].Personality = perso
 		}
 	}
-	// On remet les personnalité à 0 dans les statistiques
+	// //Reset personalities in statistics
 	statistics.TotalStatistics.PersonalityAveragePoints = make([]*types.PersonalityAveragePoints, 0)
 	statistics.LastChampionshipStatistics.PersonalityAveragePoints = make([]*types.PersonalityAveragePoints, 0)
 	for indeTeam := range rsa.pointTabTeam {

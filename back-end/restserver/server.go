@@ -37,7 +37,7 @@ func corsMiddleware(next http.Handler) http.Handler {
 }
 
 func (rsa *RestServer) Start() {
-	//initialise statistics
+	//initialize statistics
 	statistics = &types.SimulateChampionship{}
 	for _, team := range rsa.pointTabTeam {
 		for _, driver := range team.Drivers {
@@ -48,7 +48,7 @@ func (rsa *RestServer) Start() {
 		statistics.LastChampionshipStatistics.TeamsTotalPoints = append(statistics.LastChampionshipStatistics.TeamsTotalPoints, &types.TeamTotalPoints{Team: team.Name, TotalPoints: 0})
 	}
 
-	//Initialise personnalités dans les statistiques
+	//Init personalities in statistics
 	statistics.TotalStatistics.PersonalityAveragePoints = make([]*types.PersonalityAveragePoints, 0)
 	statistics.LastChampionshipStatistics.PersonalityAveragePoints = make([]*types.PersonalityAveragePoints, 0)
 	for indeTeam := range rsa.pointTabTeam {
@@ -67,7 +67,7 @@ func (rsa *RestServer) Start() {
 
 	}
 
-	//Idem pour raceStatistics
+	//Idem for raceStatistics
 	raceStatistics = &types.SimulateRace{}
 	raceStatistics.IsLastRace = false
 	for _, team := range rsa.pointTabTeam {
@@ -97,7 +97,7 @@ func (rsa *RestServer) Start() {
 
 	}
 
-	// création du multiplexer
+	// creating multiplexer
 	mux := http.NewServeMux()
 	mux.HandleFunc("/simulateRace", rsa.startRaceSimulation)
 	mux.HandleFunc("/resetSimulateRace", rsa.resetRaceSimulation)
@@ -109,7 +109,7 @@ func (rsa *RestServer) Start() {
 	mux.HandleFunc("/reset", rsa.reset)
 	corsHandler := corsMiddleware(mux)
 
-	// création du serveur http
+	// create HTTP server
 	s := &http.Server{
 		Addr:           rsa.addr,
 		Handler:        corsHandler,
@@ -117,7 +117,7 @@ func (rsa *RestServer) Start() {
 		WriteTimeout:   20 * time.Second,
 		MaxHeaderBytes: 1 << 20}
 
-	// lancement du serveur
+	// launching server
 	log.Println("Listening on", rsa.addr)
 	go log.Fatal(s.ListenAndServe())
 

@@ -12,7 +12,7 @@ import (
 *
  */
 func (rsa *RestServer) statisticsChampionship(w http.ResponseWriter, r *http.Request) {
-	// vérification de la méthode de la requête
+	// check method of the request
 	if r.Method != "GET" {
 		return
 	}
@@ -26,7 +26,7 @@ func (rsa *RestServer) statisticsChampionship(w http.ResponseWriter, r *http.Req
 }
 
 func (rsa *RestServer) statisticsRace(w http.ResponseWriter, r *http.Request) {
-	// vérification de la méthode de la requête
+	// check method of the request
 	if r.Method != "GET" {
 		return
 	}

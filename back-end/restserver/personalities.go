@@ -9,7 +9,7 @@ import (
 	"gitlab.utc.fr/vaursdam/formule-1-ia04/types"
 )
 
-// Décodage de la requête /personalities
+// Decoding request /personalities
 func (*RestServer) decodeUpdatePersonalityRequest(r *http.Request) (req []types.UpdatePersonalityInfo, err error) {
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(r.Body)
@@ -17,7 +17,7 @@ func (*RestServer) decodeUpdatePersonalityRequest(r *http.Request) (req []types.
 	return
 }
 
-// Obtenir les personnalités d'une simulation
+// Get personalities and update them
 func (rsa *RestServer) getAndUpdatePersonalities(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" { // Obtenir les personnalités
 		fmt.Println("GET /personalities")
@@ -40,9 +40,9 @@ func (rsa *RestServer) getAndUpdatePersonalities(w http.ResponseWriter, r *http.
 		w.WriteHeader(http.StatusOK)
 		w.Write(serial)
 		return
-	} else if r.Method == "PUT" { // Mettre à jour les personnalités
+	} else if r.Method == "PUT" { // Update personalities
 		fmt.Println("PUT /personalities")
-		// décodage de la requête
+		// decode request
 		req, err := rsa.decodeUpdatePersonalityRequest(r)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
@@ -50,15 +50,15 @@ func (rsa *RestServer) getAndUpdatePersonalities(w http.ResponseWriter, r *http.
 			return
 		}
 
-		// Réponse à renvoyer
+		// Response to send
 		var resp []types.UpdatePersonalityInfo
 
-		// Parcours des équipes et des pilotes
+		// Browse teams and drivers
 		for _, team := range rsa.pointTabTeam {
 			for i := 0; i < 2; i++ {
 				for _, updateReq := range req {
 					if updateReq.IdDriver == team.Drivers[i].Id {
-						// Test des valeurs des différentes personnalités
+						// Test values of the personality
 						if updateReq.Personality["Aggressivity"] > 5 || updateReq.Personality["Aggressivity"] < 1 ||
 							updateReq.Personality["Confidence"] > 5 || updateReq.Personality["Confidence"] < 1 ||
 							updateReq.Personality["Docility"] > 5 || updateReq.Personality["Docility"] < 1 ||
@@ -69,7 +69,7 @@ func (rsa *RestServer) getAndUpdatePersonalities(w http.ResponseWriter, r *http.
 							w.Write(serial)
 							return
 						} else {
-							// Mise à jour des valeurs de personnalité du pilote
+							// Update personality of the driver
 							team.Drivers[i].Personality.TraitsValue = map[string]int{
 								"Aggressivity":  updateReq.Personality["Aggressivity"],
 								"Confidence":    updateReq.Personality["Confidence"],
@@ -78,7 +78,7 @@ func (rsa *RestServer) getAndUpdatePersonalities(w http.ResponseWriter, r *http.
 							}
 						}
 
-						// Remplissage de la réponse
+						// Filling response
 						resp = append(resp, types.UpdatePersonalityInfo{
 							IdDriver:    team.Drivers[i].Id,
 							Personality: team.Drivers[i].Personality.TraitsValue,

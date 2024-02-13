@@ -17,21 +17,21 @@ func main() {
 		panic(err)
 	}
 
-	//On crée des pointeurs vers les équipes et les circuits
+	// We create pointers to the teams and the circuits
 	pointTabCircuit := make([]*types.Circuit, len(c))
 	for i, circuit := range c {
-		tempCircuit := circuit //sans tampon, tous les éléments du tableau contiendront la même adresse
+		tempCircuit := circuit // without buffer, all elements of the array will contain the same address
 		pointTabCircuit[i] = &tempCircuit
 	}
 	initTeams := make([]types.Team, len(t))
 	pointTabTeam := make([]*types.Team, len(t))
 	for i, team := range t {
-		tempTeam := team //sans tampon, tous les éléments du tableau contiendront la même adresse
+		tempTeam := team // without buffer, all elements of the array will contain the same address
 		pointTabTeam[i] = &tempTeam
 		initTeams[i] = tempTeam
 	}
 
-	// lancement du serveur
+	// server launch
 	server := restserver.NewRestServer(":8080", pointTabCircuit, pointTabTeam, initPersonalities)
 	server.Start()
 }

@@ -13,18 +13,18 @@ import (
 
 var nextChampionship = "2023/2024"
 var nbSimulation int
-var statistics *types.SimulateChampionship = &types.SimulateChampionship{} // var globale pour être utilisée dans /statisticsChampionship
+var statistics *types.SimulateChampionship = &types.SimulateChampionship{} // global var used in/statisticsChampionship
 
 func addNewStatistsicsToPrevious(lastStats types.LastChampionshipStatistics) {
-	//modifie l'objets "statistics" pour ajouter correctement les dernières stats
+	//update "statistics" to add correctly latests stats
 	if statistics.LastChampionship == "" {
-		//Cas particlier : si on est au premier championnat, le total vaut la dernière simulation
+		//Particular case : first championship
 		statistics.TotalStatistics = types.TotalStatistics(lastStats)
 		statistics.LastChampionshipStatistics = lastStats
 		return
 	} else {
-		//Cas général
-		//Ajout des points des pilotes
+		// General case
+		// Adding drivers points
 		statistics.LastChampionshipStatistics = lastStats
 		mapScoreDrivers := make(map[string]int)
 		for _, driver := range lastStats.DriversTotalPoints {
@@ -34,7 +34,7 @@ func addNewStatistsicsToPrevious(lastStats types.LastChampionshipStatistics) {
 			statistics.TotalStatistics.DriversTotalPoints[i].TotalPoints += mapScoreDrivers[statistics.TotalStatistics.DriversTotalPoints[i].Driver]
 		}
 
-		//Ajout des points des teams
+		// Adding teams points
 		mapScoreTeams := make(map[string]int)
 		for _, team := range lastStats.TeamsTotalPoints {
 			mapScoreTeams[team.Team] = team.TotalPoints
@@ -49,7 +49,7 @@ func addNewStatistsicsToPrevious(lastStats types.LastChampionshipStatistics) {
 			}
 		}
 
-		//Ajout des points des personnalités
+		// Adding personality points
 		for _, personality := range lastStats.PersonalityAveragePoints {
 			var found bool //set to true if personnality is found
 			for i := range statistics.TotalStatistics.PersonalityAveragePoints {
@@ -58,17 +58,17 @@ func addNewStatistsicsToPrevious(lastStats types.LastChampionshipStatistics) {
 					personality.Personality["Confidence"] == statistics.TotalStatistics.PersonalityAveragePoints[i].Personality["Confidence"] &&
 					personality.Personality["Docility"] == statistics.TotalStatistics.PersonalityAveragePoints[i].Personality["Docility"] {
 					found = true
-					//On repasse à la somme
+					// Using sum
 					statistics.TotalStatistics.PersonalityAveragePoints[i].AveragePoints = statistics.TotalStatistics.PersonalityAveragePoints[i].AveragePoints*float64(statistics.TotalStatistics.PersonalityAveragePoints[i].NbDrivers) + personality.AveragePoints*float64(personality.NbDrivers)
-					//Maj du nb de pilotes
+					// Update number of drivers
 					statistics.TotalStatistics.PersonalityAveragePoints[i].NbDrivers += personality.NbDrivers
-					//Maj de la moyenne
+					// Update average
 					statistics.TotalStatistics.PersonalityAveragePoints[i].AveragePoints = statistics.TotalStatistics.PersonalityAveragePoints[i].AveragePoints / float64(statistics.TotalStatistics.PersonalityAveragePoints[i].NbDrivers)
 					break
 				}
 			}
 			if !found {
-				//Si la personnalité explorée n'a pas été recensée
+				//Case of an unexplored personality
 				var perso types.Personality
 				perso.TraitsValue = make(map[string]int)
 				perso.TraitsValue["Confidence"] = personality.Personality["Confidence"]
@@ -83,9 +83,10 @@ func addNewStatistsicsToPrevious(lastStats types.LastChampionshipStatistics) {
 
 }
 
+// Generate next championship name depending on current championship
 func getNextChampionshipName(currChampionship string) (string, error) {
 	years := strings.Split(currChampionship, "/")
-	newFirstYear, err := time.Parse("2006", years[0]) //on souhaite récupérer la première année
+	newFirstYear, err := time.Parse("2006", years[0])
 	if err != nil {
 		return "", err
 	}
@@ -96,10 +97,10 @@ func getNextChampionshipName(currChampionship string) (string, error) {
 
 }
 
-// Lancement d'une simulation d'un championnat et retour de statistiques
+// Launch simulation of a championship and return statistics
 func (rsa *RestServer) startSimulation(w http.ResponseWriter, r *http.Request) {
 
-	// vérification de la méthode de la requête
+	// check method of the request
 	if r.Method != "GET" {
 		return
 	}
@@ -115,11 +116,11 @@ func (rsa *RestServer) startSimulation(w http.ResponseWriter, r *http.Request) {
 	s := simulator.NewSimulator([]types.Championship{*championship})
 	nbSimulation += 1
 
-	// Lancement de la simulation
+	// Launch simmulation
 	driverLastChampPoints, teamLastChampPoints, personalityLastChampAveragePoints, personnalityAverage := s.LaunchSimulation()
 	lastChampionshipstatistics := types.NewLastChampionshipStatistics(driverLastChampPoints, teamLastChampPoints, personalityLastChampAveragePoints, personnalityAverage, nil)
 
-	//Ajoute les nouvelles statistics
+	//Add new statistics
 	addNewStatistsicsToPrevious(*lastChampionshipstatistics)
 	statistics.LastChampionship = championship.Name
 	statistics.NbSimulations = nbSimulation
@@ -129,9 +130,10 @@ func (rsa *RestServer) startSimulation(w http.ResponseWriter, r *http.Request) {
 	w.Write(serial)
 }
 
+// Launch simulation with random personalities
 func (rsa *RestServer) startSimulationRandom(w http.ResponseWriter, r *http.Request) {
 
-	// vérification de la méthode de la requête
+	// check method of the request
 	if r.Method != "GET" {
 		return
 	}
@@ -147,11 +149,11 @@ func (rsa *RestServer) startSimulationRandom(w http.ResponseWriter, r *http.Requ
 	s := simulator.NewSimulator([]types.Championship{*championship})
 	nbSimulation += 1
 
-	// Lancement de la simulation
+	// Launch simmulation
 	driverLastChampPoints, teamLastChampPoints, personalityLastChampAveragePoints, personnalityAverage := s.LaunchSimulation()
 	lastChampionshipstatistics := types.NewLastChampionshipStatistics(driverLastChampPoints, teamLastChampPoints, personalityLastChampAveragePoints, personnalityAverage, nil)
 
-	//Ajoute les nouvelles statistics
+	//Add new statistics
 	addNewStatistsicsToPrevious(*lastChampionshipstatistics)
 	statistics.LastChampionship = championship.Name
 	statistics.NbSimulations = nbSimulation
