@@ -27,7 +27,7 @@ const PersonalityBarChart = ({ personalityStatistics, title }) => {
         }),
         datasets: [
           {
-            label: "Moyenne par champ.",
+            label: "Average per champ.",
             data: data.map((perso) => {
               return perso.averagePoints.toFixed(2);
             }),
@@ -44,7 +44,7 @@ const PersonalityBarChart = ({ personalityStatistics, title }) => {
           scales: {
             xAxes: [
               {
-                display: false, // Masquer les labels sous l'axe des x
+                display: false, // Hide labels under x axis
               },
             ],
             yAxes: [

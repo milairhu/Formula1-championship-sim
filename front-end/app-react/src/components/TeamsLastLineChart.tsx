@@ -28,12 +28,12 @@ const TeamsLastLineChart = ({statistics }) => {
 
 
   function updateDatasets(data) {
-    //Etape 1 : mise à jour du dataset
+    //Step 1 : update dataset
     let res = datasets;
       if (res.length === 0) {
         data.lastChampionshipStatistics.teamsTotalPoints.forEach((team) => {
           res.push({
-            label: "Total de points " + team.team,
+            label: "Total of points " + team.team,
             data: [team.totalPoints],
             backgroundColor: teamColorsMap[team.team],
             borderColor: teamColorsMap[team.team],
@@ -43,20 +43,18 @@ const TeamsLastLineChart = ({statistics }) => {
         })
       }
       else {
-        //Obligé de tester si lastChampionship est vide car sinon on risque d'ajouter des 0 inutiles
         if (data.lastChampionship !== ""){
           res.forEach((d) => {
           data.lastChampionshipStatistics.teamsTotalPoints.forEach((team) => {
-            if (d.label === "Total de points " + team.team) {
+            if (d.label === "Total of points " + team.team) {
               d.data.push(team.totalPoints)
             }
           })
         })
         } else {
-          //on a réinitiliaisé le championnat, on réinitialise les datasets
           res.forEach((d) => {
             data.lastChampionshipStatistics.teamsTotalPoints.forEach((team) => {
-              if (d.label === "Total de points " + team.team) {
+              if (d.label === "Total of points " + team.team) {
                 d.data = [team.totalPoints]
                 d.backgroundColor = teamColorsMap[team.team]
                 d.borderColor = teamColorsMap[team.team]
@@ -67,7 +65,7 @@ const TeamsLastLineChart = ({statistics }) => {
       }
     setDatasets(res)
 
-    //Etape 2 : mise à jour du lineChart
+    //Step 2 : update lineChart
     setLineChart(() => {
       let labels = lineChart.labels;
       if (data.lastChampionship == "" ) {
@@ -85,7 +83,7 @@ const TeamsLastLineChart = ({statistics }) => {
     }
 
     return (
-      <LineChart title={"Points des équipes par championnat"} chartData={lineChart} />
+      <LineChart title={"Points of teams per championship"} chartData={lineChart} />
     );
 };
 

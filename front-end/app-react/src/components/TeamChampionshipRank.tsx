@@ -22,7 +22,7 @@ const TeamsChampionshipRank = ({teamsStatistics, lastChamp }) => {
                     })
                     res.push({name : team.team, points: team.totalPoints, lastPoints: lastPoints })
                 })
-                //trie les teams par points
+                //sort teams by points
                 res.sort((a,b) => {
                     return b.points - a.points
                 })
@@ -37,10 +37,10 @@ const TeamsChampionshipRank = ({teamsStatistics, lastChamp }) => {
         <table className="w-full h-full table-auto border border-gray-300 p-2">
         <thead>
           <tr>
-            <th className="text-left pl-1 ">Rang</th>
-            <th className="text-center">Equipe</th>
+            <th className="text-left pl-1 ">Rank</th>
+            <th className="text-center">Team</th>
             <th className="text-center">Tot. Points</th>
-            <th className="text-center">Points au dernier championnat</th>
+            <th className="text-center">Points at last championship</th>
           </tr>
         </thead>
         <tbody>

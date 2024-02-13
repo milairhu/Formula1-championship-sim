@@ -19,7 +19,7 @@ const PersonalityChampionshipRank = ({personalityStatistics }) => {
                   
                   res.push({name : shortName, points: perso.averagePoints.toFixed(2), nbDrivers: perso.nbDrivers })
                 })
-                //trie les personnalités par points
+                //sort personalities per points
                 res.sort((a,b) => {
                     return b.points - a.points
                 })
@@ -45,10 +45,10 @@ const PersonalityChampionshipRank = ({personalityStatistics }) => {
         <table className="w-full h-full table-auto border border-gray-300 p-2">
         <thead>
           <tr>
-            <th className="text-left pl-1 ">Rang</th>
-            <th className="text-center">Personnalité</th>
-            <th className="text-center">Moyenne par champ.</th>
-            <th className="text-center">Nb. Pilotes</th>
+            <th className="text-left pl-1 ">Rank</th>
+            <th className="text-center">Personality</th>
+            <th className="text-center">Average per champ.</th>
+            <th className="text-center">Nb. Drivers</th>
           </tr>
         </thead>
         <tbody>

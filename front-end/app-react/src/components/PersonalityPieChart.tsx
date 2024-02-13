@@ -26,7 +26,7 @@ const PersonalityPieChart = ({personalityStatistics }) => {
           }),
           datasets: [
             {
-              label: "Nombre d'apparitions",
+              label: "Occurence",
               data: data.map((perso) => {
                 return perso.nbDrivers
               }),
@@ -52,7 +52,7 @@ const PersonalityPieChart = ({personalityStatistics }) => {
     },[personalityStatistics])
 
     return (
-      <PieChart title={"Fréquences des profils"} chartData={pieChart} />
+      <PieChart title={"Distribution of profiles"} chartData={pieChart} />
     );
 };
 

@@ -30,13 +30,12 @@ const TeamsTotalLineChart = ({statistics }) => {
 
 
     function updateDatasets(data) {
-      //Etape 1 : mise à jour du dataset
+      // Step 1 : update dataset
       let res = datasets;
         if (res.length === 0) {
-          //console.log("Res vaut 0")
           data.totalStatistics.teamsTotalPoints.forEach((team) => {
             res.push({
-              label: "Total de points " + team.team,
+              label: "Total of points " + team.team,
               data: [team.totalPoints],
               backgroundColor: teamColorsMap[team.team],
               borderColor: teamColorsMap[team.team],
@@ -46,24 +45,18 @@ const TeamsTotalLineChart = ({statistics }) => {
           })
         }
         else {
-          //Obligé de tester si lastChampionship est vide car sinon on risque d'ajouter des 0 inutiles
           if (data.lastChampionship !== ""){
-            //console.log("On a reçu un championnat")
             res.forEach((team) => {
             data.totalStatistics.teamsTotalPoints.forEach((teamData) => {
-              if (team.label === "Total de points " + teamData.team) {
-                //console.log("On a trouvé une équipe : " + teamData.team )
+              if (team.label === "Total of points " + teamData.team) {
                 team.data.push(teamData.totalPoints)
-                //console.log(team.data)
               }
             })
           })
           } else {
-            //on a réinitiliaisé le championnat, on réinitialise les datasets
-            //console.log("On a un championnat vide")
             res.forEach((team) => {
               data.totalStatistics.teamsTotalPoints.forEach((teamData) => {
-                if (team.label === "Total de points " + teamData.team) {
+                if (team.label === "Total of points " + teamData.team) {
                   team.data = [teamData.totalPoints]
                   team.backgroundColor = teamColorsMap[teamData.team]
                   team.borderColor = teamColorsMap[teamData.team]
@@ -74,7 +67,7 @@ const TeamsTotalLineChart = ({statistics }) => {
         }
       setDatasets(res)
 
-      //Etape 2 : mise à jour du lineChart
+      //Step 2 : update lineChart
       setLineChart(() => {
         let labels = lineChart.labels;
         if (data.lastChampionship == "" ) {
@@ -83,8 +76,6 @@ const TeamsTotalLineChart = ({statistics }) => {
         else{
           labels = lineChart.labels.concat(data.lastChampionship)
         }
-        //console.log(labels)
-        //console.log(res)
         return {
           labels: labels,
           datasets: res
@@ -96,7 +87,7 @@ const TeamsTotalLineChart = ({statistics }) => {
 
 
     return (
-      <LineChart title={"Total de points par équipes"} chartData={lineChart} />
+      <LineChart title={"Total of points per teams"} chartData={lineChart} />
     );
 };
 
