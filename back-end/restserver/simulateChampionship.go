@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"gitlab.utc.fr/vaursdam/formule-1-ia04/simulator"
-	"gitlab.utc.fr/vaursdam/formule-1-ia04/types"
+	"github.com/milairhu/Formula1-championship-sim/back-end/simulator"
+	"github.com/milairhu/Formula1-championship-sim/back-end/types"
 )
 
 var nextChampionship = "2023/2024"

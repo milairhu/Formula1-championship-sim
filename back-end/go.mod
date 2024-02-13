@@ -1,3 +1,3 @@
-module gitlab.utc.fr/vaursdam/formule-1-ia04
+module github.com/milairhu/Formula1-championship-sim/back-end
 
 go 1.18

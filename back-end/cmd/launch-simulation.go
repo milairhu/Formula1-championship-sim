@@ -1,9 +1,9 @@
 package main
 
 import (
-	"gitlab.utc.fr/vaursdam/formule-1-ia04/restserver"
-	"gitlab.utc.fr/vaursdam/formule-1-ia04/types"
-	"gitlab.utc.fr/vaursdam/formule-1-ia04/utils"
+	"github.com/milairhu/Formula1-championship-sim/back-end/restserver"
+	"github.com/milairhu/Formula1-championship-sim/back-end/types"
+	"github.com/milairhu/Formula1-championship-sim/back-end/utils"
 )
 
 func main() {

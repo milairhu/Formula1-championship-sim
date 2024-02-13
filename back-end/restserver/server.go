@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"gitlab.utc.fr/vaursdam/formule-1-ia04/types"
+	"github.com/milairhu/Formula1-championship-sim/back-end/types"
 )
 
 type RestServer struct {
