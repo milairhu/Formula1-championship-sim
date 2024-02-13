@@ -1,121 +1,126 @@
-# Formule 1 IA04
+# Formula 1 Championship Simulator : study of the impact of personality on the performance of a driver
 
-IA04 - Groupe 1C
-Yannis Brena--Label, Adam Hafiz, Hugo Milair, Damien Vaurs
+Project led in the context of the IA04 course at UTC, supervised by S. Lagrue and H. Willot in 2023/2024.
+By : Yannis Brena--Label, Adam Hafiz, Hugo Milair, Damien Vaurs
 
-Semestre A23, supervisé par S. Lagrue et H. Willot.
+## Generalities
 
-## Préambule
+This project is the main project of the IA04 cours **Multi-Agent Systems** at UTC. The aim of the project was to develop a simulation involving several **agents** which communicate with an **environment**. The technology used had to be Go for the backend. It was established by the group that a React frontend would be used.
 
-Ce fichier s'inscrit dans le cadre du travail réalisé par le groupe 1C pour le projet de modélisation et de simulation d'un système multi-agent. Il décrit à la fois le backend (Go) et le frontend (React) que le lecteur pourra trouver dans les répertoires GitLab suivant :
+Our idea was to implement formula 1 races on existing F1 circuits with existing drivers and teams. Performances of drivers in race depend on their intrinsinque level, their car and their personality. The **personality** is divided in **4 Traits** : Agressivity, Concentration, Confidence and Docility. The first two are fixed while the last two are likely to evolve from a race to another, depending on race results, crashes, etc. The goal of the project was to **study the impact of these personality traits on the performance of the drivers**.
 
-- frontend - https://gitlab.utc.fr/ybrenala/formule-1-ia04-front 
-- backend - https://gitlab.utc.fr/vaursdam/formule-1-ia04 
+Refer to the [project description](#project-description) for more details.
 
-## Lancement du projet
+The project was to be developed in 2 to 3 months and got the final grade of 17.5/20.
 
-### Installation
+Original repositories:
 
-Les deux parties du projet sont téléchargeables avec les commandes suivantes :
+* [backend](https://gitlab.utc.fr/vaursdam/formule-1-ia04)
+* [frontend](https://gitlab.utc.fr/ybrenala/formule-1-ia04-front)
 
-    git clone https://gitlab.utc.fr/ybrenala/formule-1-ia04-front
-    git clone https://gitlab.utc.fr/vaursdam/formule-1-ia04 
+## Launching the project
 
-**Après le clone**, pour le frontend, il se peut que des dépendances doivent être installées. Lors de nos essais, il s'est avéré que la commande suivante était l'unique à réaliser pour pouvoir lancer correctement le projet : 
+### Getting started
+
+The project can be cloned with the following commands:
+
+    git clone https://github.com/milairhu/Formula1-championship-sim.git
+**After cloning**, for the frontend, it may be necessary to install dependencies. During our tests, it turned out that the following command was the only one to be executed to be able to correctly launch the project:
 
     npm i react-chartjs-2
 
-**Si l'utilisateur ne clone pas le projet mais a obtenu le projet via le dépôt IA04**, il faut installer toutes les dépendances:
+**If the user does not clone the project but obtained the project via the IA04 repository**, all dependencies must be installed:
 
-- se placer dans app-react
-- réaliser la commande *npm install* pour installer les dépendances.
+* navigate to app-react
+* run the command *npm install* to install the dependencies.
 
-### Lancement des programmes
+### Launching the programs
 
-En ligne de commande, l'interface utilisateur se lance depuis le sous-repertoire *app-react* avec **npm**:
+In the command line, the user interface is launched from the *app-react* subdirectory with **npm**:
 
     npm run start
 
-Quant au projet Go, l'utilisateur peut soit lancer le programme avec :
+As for the Go project, the user can either run the program with:
 
     go run cmd/launch-simulation.go
 
-Ou en installant dans un premier temps le fichier exécutable :
+Or by first installing the executable file:
 
     go install cmd/launch-simulation.go
 
-L'utilisateur pourra alors exécuter le fichier depuis son répertoire Go.
+The user can then execute the file from their Go directory.
 
-### Remarques et conseils
+### Remarks and recommendations
 
-Pour le bon fonctionnement de l'interface utilisateur, il est impératif que le backend soit lancé. Aussi, l'utilisateur doit s'assurer que son **port 8080** soit libre pour que les requêtes du frontend atteignent bien le backend.
+For the proper functioning of the user interface, it is imperative that the backend be running. Also, the user must ensure that their **port 8080** is available so that the frontend requests reach the backend correctly.
 
-Aussi, lors de l'utilisation de l'interface utilisateur, il est possible que les graphes s'affichent mal dans l'onglet principal. On conseille à l'utilisateur de cliquer sur le bouton *Simuler un seul championnat*, aller sur un autre onglet, puis revenir sur l'onglet principal. Les graphes s'afficheront alors correctement lors de la simulation.
+When using the user interface, it is possible that the graphs may not display correctly in the main tab. We advise the user to click on the *Simuler un seul championnat* button, go to another tab, and then return to the main tab. The graphs will then display correctly during the simulation.
 
-Enfin, le dossier **python_plots** contient le scripts Python permettant de tracer des graphes intéressants dans le cadre de la simulation mais que nous n'avons pas eu le temps d'inétgrer à l'interface utilisateur. L'utilisateur peut visualiser les dits graphes dans le même dossier. Des indications précises sur l'utilisation de ce script sont disponibles en tête du fichier Python.
+Finally, the **python_plots** folder contains Python scripts for plotting interesting graphs as part of the simulation, but which we did not have time to integrate into the user interface. The user can view these graphs in the same folder. Detailed instructions on using this script are available at the top of the Python file.
 
-## Description du projet
+## Project Description
 
-### Objectif du projet
+### Project Objective
 
-Ce projet a pour but de répondre à la problématique **Quel est le meilleur profil d’un pilote pour obtenir le plus de points ?**. Y répondre permettrait notamment, dans la position d'une équipe, d'éclairer la stratégie de recrutement des pilotes à la lumière de leur personnalité.
+This project aims to address the problem statement **What is the best profile for a driver to score the most points?**. Answering this question would notably, from a team's position, shed light on the driver recruitment strategy in light of their personality.
 
-Une personnalité est définie par 4 traits de caractère qui influencent le comportement du pilote en course. Ces traits sont les suivants :
+A personality is defined by 4 character traits that influence the driver's behavior in races. These traits are:
 
-- **Aggressivité** : détermine la propension du pilote à tenter des dépassements
-- **Concentration** : détermine la capacité du pilote à se concentrer sur la course
-- **Confiance** : détermine le niveau de confiance en soi du pilote
-- **Docilité** : détermine la docilité du pilote face aux consignes de l'équipe
+* **Aggressiveness**: determines the driver's propensity to attempt overtaking maneuvers
 
-Les deux premiers de ces traits, une fois fixés, ne varient pas au cours de la carrière du pilote. Les deux derniers, en revanche, peuvent évoluer en fonction des performances en courses des pilotes.
+* **Concentration**: determines the driver's ability to focus on the race
+* **Confidence**: determines the driver's level of self-confidence
+* **Docility**: determines the driver's docility to the team's instructions
 
-L'objectif de la simulation est ainsi de **déceler quelle personnalité est la plus performante en course**. Pour cela, l'utilisateur peut, à travers l'interface, simuler des championnats ou des courses de Formule 1 et visualiser les résultats des pilotes, des équipes et des différents profils de personnalité. Il peut également modifier les personnalités des pilotes au cours de la simulation pour observer l'impact de ces changements sur les résultats du pilote.
-On lui conseille par ailleurs d'observer les pilotes surperformant dans les championnats (ex. le pilote Sargeant, bien que conduisant une mauvaise voiture et ayant un niveau intrinsèque faible, est régulièrement dans les meilleurs pilotes de nos simulations) et d'appliquer leurs personnalités à des pilotes mal classés. Le pilote aura tendance à gagner plus de points et l'utilisateur pourra observer l'impact de la personnalité sur les résultats.
+The first two of these traits, once set, do not change during the driver's career. The last two, however, can evolve depending on the driver's performance in races.
 
-Remarquons que la présentation du projet face aux professeurs ainsi que le graphe contenu dans **python_plots** ont mené à la conclusion que le pilote idéal est **peu agressif**, **peu concentré** et **peu docile**. Il est par ailleurs **très confiant**.
+The goal of the simulation is thus to **detect which personality is the most performing in a race**. To do this, the user can, through the interface, simulate Formula 1 championships or races and visualize the results of drivers, teams, and different personality profiles. They can also modify the personalities of drivers during the simulation to observe the impact of these changes on the driver's results.
+We also advise the user to observe the overperforming drivers in the championships (e.g., the driver Sargeant, despite driving a bad car and having a low intrinsic level, is regularly among the best drivers in our simulations) and to apply their personalities to poorly ranked drivers. The driver will tend to score more points and the user will be able to observe the impact of personality on results.
 
-### Modélisation
+It should be noted that the presentation of the project to the teachers as well as the graph contained in **python_plots** led to the conclusion that the ideal driver is **not very aggressive**, **not very concentrated**, and **not very docile**. He is also **very confident**.
 
-Ce projet prend en comptes plusieurs éléments des championnats de Formule 1. Les plus importants sont:
+### Modeling
 
-- les **pilotes**, les agents de la simulation, qui sont caractérisés par leur personnalité, leur niveau et leur équipe. Les traits de personnalité initiaux de chaccun des 20 pilotes ont été estimés par un suiveur assidu de la Formule 1.
-- les **circuits** sur lesquels évoluent les pilotes. 12 circuits régulièrement impliqués dans les championnats ont été modélisés.
-- les **courses**, qui constituent le point d'intérêt des simulations.
+This project takes into account several elements of Formula 1 championships. The most important ones are:
 
-Au sein des courses, certains éléments sont pris en compte :
+* the **drivers**, the agents of the simulation, who are characterized by their personality, level, and team. The initial personality traits of each of the 20 drivers were estimated by a keen follower of Formula 1.
+* the **circuits** on which the drivers evolve. 12 circuits regularly involved in the championships have been modeled.
+* the **races**, which constitute the point of interest of the simulations.
 
-- la **météo**, dont la distribution varie en fonction de la situation géographique du circuit.
-- les **pneus**, qui s'ils ne sont pas remplacés risque de mener à une crevaison. L'état des pneus influe aussi sur la vitesse des pilotes
-- les **arrêts au stand** qui permettent de changer de pneus.
+Within the races, certain elements are taken into account:
 
-D'autres éléments, notamment les qualifications et essais libres, pourraient être ajoutés. Aussi le modèle pourrait être amélioré pour correspondre au mieux à la réalité.
+* the **weather**, whose distribution varies depending on the geographical location of the circuit.
+* the **tires**, which if not replaced, may lead to a puncture. The condition of the tires also affects the speed of the drivers.
+* **pit stops** which allow changing tires.
 
-## Captures d'écran de l'interface graphique
+Other elements, such as qualifications and free practice sessions, could be added. Also, the model could be improved to best match reality.
 
-### Simulation de championnats
+## Screenshots of the graphical interface
 
-#### Statistiques pilotes
+### Championship Simulation
 
-![Alt text](doc/screens/drivers.png)
+#### Drivers Statistics
 
-#### Statistiques équipes
+![Drivers Statistics](doc/screens/drivers.png)
 
-![Alt text](doc/screens/teams.png)
+#### Teams Statistics
 
-#### Statistiques personnalités
+![Teams Statistics](doc/screens/teams.png)
 
-![Alt text](doc/screens/personnality.png)
+#### Personalities Statistics
 
-### Simulation d'une course
+![Personalities Statistics](doc/screens/personnality.png)
 
-#### Résultats d'une course
+### Race Simulation
 
-![Alt text](doc/screens/race.png)
+#### Race Results
 
-#### Personnalités d'une course
+![Race Results](doc/screens/race.png)
 
-![Alt text](doc/screens/persoRace.png)
+#### Personalities of a Race
 
-### Modification des personnalités
+![Personalities of a Race](doc/screens/persoRace.png)
 
-![Alt text](doc/screens/perso.png)
+### Modifying Personalities
+
+![Modifying Personalities](doc/screens/perso.png)
