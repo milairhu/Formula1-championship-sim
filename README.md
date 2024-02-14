@@ -1,7 +1,8 @@
 # Formula 1 Championship Simulator : study of the impact of personality on the performance of a driver
 
 Project led in the context of the IA04 course at UTC, supervised by S. Lagrue and H. Willot in 2023/2024.
-By : Yannis Brena--Label, Adam Hafiz, Hugo Milair, Damien Vaurs
+
+By Yannis Brena--Label, Adam Hafiz, Hugo Milair, Damien Vaurs
 
 ## Generalities
 
