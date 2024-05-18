@@ -2,11 +2,11 @@
 
 Project led in the context of the IA04 course at UTC, supervised by S. Lagrue and H. Willot in 2023/2024.
 
-By Yannis Brena--Label, Adam Hafiz, Hugo Milair, Damien Vaurs
+By Yannis Brena--Label, Adam Hafiz, Hugo Milair, Damien Vaurs.
 
 ## Generalities
 
-This project is the main project of the IA04 course **Multi-Agent Systems** at UTC. The aim of the project was to develop a simulation involving several **agents** which communicate with an **environment**. The technology used had to be Go for the backend. It was established by the group that a React frontend would be used.
+This project is the main project of the IA04 course **Multi-Agent Systems** at the UTC. The aim of the project was to develop a simulation involving several **agents** which communicate with an **environment**. The technology used had to be Go for the backend. It was established by the group that a React frontend would be used.
 
 Our idea was to implement formula 1 races on existing F1 circuits [modelised in back-end/instances/circuits/](back-end/instances/circuits/) with existing drivers and teams [here](back-end/instances/teams/). Performances of drivers in race depend on their intrinsinque level, their car and their personality. The **personality** is divided in **4 Traits** : Agressivity, Concentration, Confidence and Docility. The first two are fixed while the last two are likely to evolve from a race to another, depending on race results, crashes, etc. The goal of the project was to **study the impact of these personality traits on the performance of the drivers**.
 
