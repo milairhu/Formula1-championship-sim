@@ -51,9 +51,9 @@ The user can then execute the file from their Go directory.
 
 For the proper functioning of the user interface, it is imperative that the backend be running. Also, the user must ensure that their **port 8080** is available so that the frontend requests reach the backend correctly.
 
-When using the user interface, it is possible that the graphs may not display correctly in the main tab. We advise the user to click on the *Simulate a single championship* button, go to another tab, and then return to the main tab. The graphs will then display correctly during the simulation.
+When using the user interface, it is possible that the graphs may not be displayed correctly in the main tab. We advise the user to click on the *Simulate a single championship* button, go to another tab, and return to the main tab. The graphs will then display correctly during the simulation.
 
-Finally, the **python_plots** folder contains Python scripts for plotting interesting graphs as part of the simulation, but which we did not have time to integrate into the user interface. The user can view these graphs in the same folder. Detailed instructions on using this script are available at the top of the Python file.
+Finally, the **python_plots** folder contains Python scripts for plotting interesting graphs as part of the simulation, but we did not have time to integrate it into the user interface. The user can view these graphs in the same folder. Detailed instructions on using this script are available at the top of the Python file.
 
 ## Project Description
 
